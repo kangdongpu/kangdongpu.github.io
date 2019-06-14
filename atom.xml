@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>满天星爱我</title>
+  
+  <subtitle>如果可以安逸，谁愿意颠沛流离！</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2018-01-01T04:00:00.000Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>满天星</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>反射总结</title>
+    <link href="http://yoursite.com/2018/09/21/%E5%8F%8D%E5%B0%84%E6%80%BB%E7%BB%93/"/>
+    <id>http://yoursite.com/2018/09/21/反射总结/</id>
+    <published>2018-09-21T04:21:27.000Z</published>
+    <updated>2018-01-01T04:00:00.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="什么是反射"><a href="#什么是反射" class="headerlink" title="什么是反射?"></a>什么是反射?</h1><p>定义：反射就是把JAVA类中的各种成分映射成相应的JAVA类。</p><h1 id="获取Class的实例对象-三种方法"><a href="#获取Class的实例对象-三种方法" class="headerlink" title="获取Class的实例对象(三种方法)"></a>获取Class的实例对象(三种方法)</h1><ul><li>Class p=Object.class;  “Object.class”就代表Object的字节码，“Object.class”的所属类型的Class</li><li>Class.forName(“类的全路径名”);</li><li>对象名.getClass();</li></ul><h1 id="类构造函数的反射-Constructor"><a href="#类构造函数的反射-Constructor" class="headerlink" title="类构造函数的反射 Constructor"></a>类构造函数的反射 Constructor</h1><p>Constructor代表一个类的构造方法</p><ul><li><p>得到类的一个构造函数的方法</p><pre><code>public Constructor&lt;T&gt; getConstructor(Class&lt;?&gt;... parameterTypes)  </code></pre><p> throws NoSuchMethodException,SecurityException<br>通过参数类型，得到想要的构造函数，因为接收的是可变参数，所以可以传多个。</p><p>比如：想得到String的String（StringBuffer buf）的构造方法，可以这么写：</p><pre><code>String.class.getConstructor(StringBuffer.class);</code></pre></li><li><p>得到一个类的所有构造函数的方法 </p><pre><code>public Constructor&lt;?&gt;[] getConstructors() throws SecurityException</code></pre></li><li><p>通过构造函数实例化带参数的对象，例如：</p><pre><code>Constructor c = String.class.getConstructor(StringBuffer.class);String s = c.newInstance(new StringBuffer(&quot;Hello World&quot;));</code></pre></li><li><p>通过构造函数实例化不带参数的对象</p><pre><code>String s = String.class.newInstance();</code></pre><h1 id="类成员变量的反射-Filed"><a href="#类成员变量的反射-Filed" class="headerlink" title="类成员变量的反射 Filed"></a>类成员变量的反射 Filed</h1></li><li><p>通过成员变量名获取成员变量</p><pre><code>Object.class.getDeclaredField(&quot;成员变量名&quot;)</code></pre></li><li><p>获取该类所有的成员变量</p><pre><code>Object.class.getDeclaredFields();</code></pre></li><li><p>获取成员变量的值</p><pre><code>Class cla = Object.class;Field field = cla.getDeclaredField(&quot;成员变量名&quot;);String s = (String) field.get(cla);</code></pre></li><li><p>修改成员变量的值<br>方法：Field.set(Object obj, Object value);<br>obj：类的对象<br>value：变量的值<br>例如:</p><pre><code>Class cla = Object.class;Object obj =cla.newInstance();Field field = cla.getDeclaredField(&quot;成员变量名&quot;);field.set(obj,&quot;Hello World&quot;);</code></pre></li></ul><h1 id="类成员方法的反射-Method"><a href="#类成员方法的反射-Method" class="headerlink" title="类成员方法的反射 Method"></a>类成员方法的反射 Method</h1><ul><li><p>获取类中所有的方法</p><pre><code>Method[] methods = Object.class.getDeclaredMethods();</code></pre></li><li><p>获取类中某一个方法</p><pre><code>Method method = cla.getDeclaredMethod(String name, Class&lt;?&gt;... parameterTypes);</code></pre><p>name：这个表示方法的名字<br>parameterTypes：这个参数的作用表示调用哪个方法，因为重载的原因，一个类中同名的方法可能不止一个</p></li><li><p>方法调用</p><pre><code>method.invoke(Object obj, Object... args);</code></pre><p>object：调用的方法对象<br>args: 调用的方法参数</p></li></ul><h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><blockquote><ul><li><strong>getDeclaredMethod</strong> 和 <strong>getMethod方法</strong>的区别<br>getDeclaredMethod：获取的是类自身声明的所有方法，包含public、protected和private方法。<br>getMethod：获取的是类的所有共有方法，这就包括自身的所有public方法，和从基类继承的、从接口实现的所有public方法。</li><li><strong>getDeclaredField</strong>和<strong>getField</strong>的区别<br>getDeclaredField：可以获取一个类的所有字段.<br>getField：只能获取类的public 字段.</li></ul></blockquote><blockquote><p>当要修改的成员变量或者成员方法被<strong>private</strong>修饰时，需要使用以下方法来强制获取其修改权限：<br> 成员变量：field.setAccessible(true);<br> 成员方法： method.setAccessible(true);</p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;什么是反射&quot;&gt;&lt;a href=&quot;#什么是反射&quot; class=&quot;headerlink&quot; title=&quot;什么是反射?&quot;&gt;&lt;/a&gt;什么是反射?&lt;/h1&gt;&lt;p&gt;定义：反射就是把JAVA类中的各种成分映射成相应的JAVA类。&lt;/p&gt;
+&lt;h1 id=&quot;获取Class的实例对象
+      
+    
+    </summary>
+    
+      <category term="Java" scheme="http://yoursite.com/categories/Java/"/>
+    
+    
+      <category term="Reflect" scheme="http://yoursite.com/tags/Reflect/"/>
+    
+      <category term="Class" scheme="http://yoursite.com/tags/Class/"/>
+    
+      <category term="Object" scheme="http://yoursite.com/tags/Object/"/>
+    
+      <category term="Filed" scheme="http://yoursite.com/tags/Filed/"/>
+    
+      <category term="Method" scheme="http://yoursite.com/tags/Method/"/>
+    
+      <category term="Constructor" scheme="http://yoursite.com/tags/Constructor/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Gradle入门之环境配置、编写第一个脚本</title>
+    <link href="http://yoursite.com/2018/06/13/Gradle%E5%85%A5%E9%97%A8%E4%B9%8B%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E3%80%81%E7%BC%96%E5%86%99%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%84%9A%E6%9C%AC/"/>
+    <id>http://yoursite.com/2018/06/13/Gradle入门之环境配置、编写第一个脚本/</id>
+    <published>2018-06-13T03:46:05.000Z</published>
+    <updated>2019-06-14T01:26:02.936Z</updated>
+    
+    <content type="html"><![CDATA[<p>在进行<strong>Gradle</strong>安装之前要确保已经安装配置好<strong>Java</strong>环境，要求<strong>JDK6</strong>以上，并且在环境变量里配置了<strong>JAVA_HOME</strong>，查看Java版本可以在终端输入如下命令：</p><pre><code>java -version</code></pre><h1 id="Windows下搭建Gradle构建环境"><a href="#Windows下搭建Gradle构建环境" class="headerlink" title="Windows下搭建Gradle构建环境"></a>Windows下搭建Gradle构建环境</h1><p>以Windows为例，先到<strong>Gradle</strong>官网<strong><a href="https://gradle.org/" target="_blank" rel="noopener">https://gradle.org/</a></strong>下载<strong>Gralde SDK</strong>，直接下载地址为<strong><a href="https://downloads.gradle.org/distributions/gradle-3.3-all.zip" target="_blank" rel="noopener">https://downloads.gradle.org/distributions/gradle-3.3-all.zip</a></strong>，当然如果有<strong>Android Studio</strong>的朋友，由于Gradle默认已经下载，就不用重新下载了，之后解压出来得到如下目录清单：</p><ul><li><strong>docs</strong><br>API、DSL、指南等文档</li><li><strong>getting-started.html</strong><br>入门链接</li><li><strong>init.d</strong><br>gradle的初始化脚本目录</li><li><strong>lib</strong><br>相关库</li><li><strong>LICENSE</strong></li><li><strong>media</strong><br>一些icon资源</li><li><strong>NOTICE</strong></li><li>**samples<br>事例</li><li><strong>src</strong><br>源文件</li></ul><p>接下来就是配置Gradle环境变量：</p><p>打开我的电脑&gt;属性面板&gt;高级系统设置&gt;环境变量，新建一个<strong>GRADLE_HOME</strong>变量，变量值为Gradle的<strong>bin</strong>目录，例如我直接使用的是Android Studio中Gradle的目录<br><img src="https://upload-images.jianshu.io/upload_images/2349677-be42ca4714a33a7a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p>然后将<strong>GRADLE_HOME/bin</strong>添加到你的环境变量<strong>PATH</strong>的路径里才可以。</p><p>好了，现在我们已经配置完了，要验证我们的配置是否正确，是否可以运行<strong>Gradle</strong>，我们只需要打开终端，输入<code>gradle -v</code>命令查看即可。如果能正确显示<strong>Gradle版本号、Groovy版本号、JVM等相关信息</strong>，那么说明你已经配置成功了。这里以验证我的配置为例：</p><p><img src="https://upload-images.jianshu.io/upload_images/2349677-7567f7b4c9ca66a0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p>环境搭建好了，那么我们就开始写一个<strong>Hello World</strong>版的<strong>Gradle脚本</strong>。</p><h1 id="编写第一个脚本"><a href="#编写第一个脚本" class="headerlink" title="编写第一个脚本"></a>编写第一个脚本</h1><p>新建好一个目录比如<strong>Android-Gradle</strong>,然后在该目录下创建一个名为<strong>build.gralde</strong>的文件，打开编辑该文件，输入以下内容：</p><pre><code>task hello{    doLast{        println &apos;Hello World&apos;     }      }</code></pre><p>打开终端，然后进入<strong>Android-Gradle</strong>目录下，使用<code>gradle -q hello</code>命令来执行构建脚本：</p><pre><code>F:\android\Android-Gradle&gt;gradle -q helloHello World</code></pre><p>接下来解释一下上面所产生的步骤和原因：</p><p><strong>build.gradle</strong>是<strong>Gradle</strong>默认的构建脚本文件，执行<strong>Gradle</strong>命令的时候，会默认加载当前目录下的<strong>build.gradle</strong>文件。这个构建脚本定义一个任务(<strong>Task</strong>)，任务名字叫<strong>hello</strong>，并且给任务<strong>hello</strong>添加了一个动作，官方名字是<strong>Action</strong>，我把它看作是业务代码逻辑或者回调实现更加贴切一些，因为<strong>doLast</strong>就意味着在<strong>Task</strong>执行完毕之后要回调<strong>doLast</strong>的这部分闭包的代码实现。</p><p>再看<strong>gradle -q hello</strong>这段运行命令，意思是要执行<strong>build.gradle</strong>脚本中定义的名为<strong>hello</strong>的<strong>Task</strong>，<strong>-q</strong>参数用于控制<strong>gradle</strong>输出的日志级别，以及哪些日志可以输出被看到。</p><p>上面中的<strong>println ‘Hello World’</strong>会输出 <strong>Hello World</strong>，它其实就是<strong>System.out.println(“Hello World”)；</strong>的简写方式。<strong>Gradle</strong>可以识别它，是因为<strong>Groovy</strong>已经把<strong>println</strong>这个方法添加到了<strong>java.lang.Object</strong>中了，而在<strong>Groovy</strong>中，方法的调用可以省略签名中的括号，以一个空格分开即可，所以就有了上面的写法。还有一点儿要说明的是，在<strong>Groovy</strong>中，单引号和双引号所包含的内容都是字符串；不像<strong>Java</strong>中，单引号是字符，双引号才是字符串。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;在进行&lt;strong&gt;Gradle&lt;/strong&gt;安装之前要确保已经安装配置好&lt;strong&gt;Java&lt;/strong&gt;环境，要求&lt;strong&gt;JDK6&lt;/strong&gt;以上，并且在环境变量里配置了&lt;strong&gt;JAVA_HOME&lt;/strong&gt;，查看Java版本可
+      
+    
+    </summary>
+    
+      <category term="Gradle" scheme="http://yoursite.com/categories/Gradle/"/>
+    
+    
+      <category term="Gradle" scheme="http://yoursite.com/tags/Gradle/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kotlin之数据类</title>
+    <link href="http://yoursite.com/2018/06/13/Kotlin%E4%B9%8B%E6%95%B0%E6%8D%AE%E7%B1%BB/"/>
+    <id>http://yoursite.com/2018/06/13/Kotlin之数据类/</id>
+    <published>2018-06-13T03:36:56.000Z</published>
+    <updated>2019-06-14T01:26:02.937Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>数据类是一种非常强大的类，它可以让你避免创建Java中的用于保存状态但又操作非常简单的POJO的模版代码。它们通常只提供了用于访问它们属性的简单的getter和setter。定义一个新的数据类非常简单：</p></blockquote><pre><code>data class Person(val name:String,val age:Int,val sex:String)</code></pre><h1 id="额外的函数"><a href="#额外的函数" class="headerlink" title="额外的函数"></a>额外的函数</h1><p>通过数据类，我们可以方便地得到很多有趣的函数，一部分是来自属性，我们之前已经讲过（从编写getter和setter函数）</p><ul><li>equals(): 它可以比较两个对象的属性来确保他们是相同的。</li><li>hashCode(): 我们可以得到一个hash值，也是从属性中计算出来的。</li><li>copy(): 你可以拷贝一个对象，可以根据你的需要去修改里面的属性。我们会在稍后的例子中看到。</li><li>一系列可以映射对象到变量中的函数。我也很快就会讲到这个。</li></ul><h1 id="复制一个数据类"><a href="#复制一个数据类" class="headerlink" title="复制一个数据类"></a>复制一个数据类</h1><p>如果使用不可修改的对象，假如现在需要修改这个对象的状态，必须创建一个或多个属性被修改的实例。这个任务是非常重复且不简洁的。<br>举个例子，如果我们需要修改Person中的age（年龄），我们可以这么做：</p><pre><code>val person1 = Person(&quot;张三&quot;,20,&quot;男&quot;)val person2 = person1.copy(age = 25)</code></pre><p>如上，我们拷贝了第一个Person对象然后只修改了age的属性而没有修改这个对象的其它状态。</p><h1 id="映射对象到变量中"><a href="#映射对象到变量中" class="headerlink" title="映射对象到变量中"></a>映射对象到变量中</h1><p>映射对象的每一个属性到一个变量中，这个过程就是所谓的多声明，这就是为什么会有<code>componentx</code>函数被自动创建，使用上面的<code>Person</code>类举个例子:</p><pre><code>val person1 = Person(&quot;张三&quot;,20,&quot;男&quot;)val(name,age,sex) = person1</code></pre><p>上面这个多声明会被编译成下面的代码:</p><pre><code>val name= f1.component1()val age= f1.component2()val sex= f1.component3()</code></pre><p>这个特性背后的逻辑是非常强大的，它可以在很多情况下帮助我们简化代码。举个例子，Map类含有一些扩展函数的实现，允许它在迭代时使用key和value：</p><pre><code>for ((key,value) in map){    Log.d(&quot;map&quot;,&quot;key:$key,vales:$value&quot;)}</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;数据类是一种非常强大的类，它可以让你避免创建Java中的用于保存状态但又操作非常简单的POJO的模版代码。它们通常只提供了用于访问它们属性的简单的getter和setter。定义一个新的数据类非常简单：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre
+      
+    
+    </summary>
+    
+      <category term="Kotlin" scheme="http://yoursite.com/categories/Kotlin/"/>
+    
+    
+      <category term="Kotlin" scheme="http://yoursite.com/tags/Kotlin/"/>
+    
+      <category term="数据类" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E7%B1%BB/"/>
+    
+      <category term="componentx" scheme="http://yoursite.com/tags/componentx/"/>
+    
+      <category term="data" scheme="http://yoursite.com/tags/data/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kotlin之类和函数</title>
+    <link href="http://yoursite.com/2018/06/13/Kotlin%E4%B9%8B%E7%B1%BB%E5%92%8C%E5%87%BD%E6%95%B0/"/>
+    <id>http://yoursite.com/2018/06/13/Kotlin之类和函数/</id>
+    <published>2018-06-13T03:36:44.000Z</published>
+    <updated>2019-06-14T01:26:02.938Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="怎么定义一个类"><a href="#怎么定义一个类" class="headerlink" title="怎么定义一个类"></a>怎么定义一个类</h1><p>如果你想定义一个类，你只需要使用<code>class</code>关键字，这一点和<strong>java</strong>一样。</p><pre><code>class Kotlin{}</code></pre><p>它有一个默认的构造器，而且大部分你也只需要这个默认的构造器。你只需要在类名后面写上它的参数。如果这个类中没有任何内容，可以省略大括号。</p><pre><code>class Kotlin(a: String，b: String)</code></pre><p>那么构造函数的函数体你可以写在<code>init</code>块中</p><pre><code>class Kotlin(a: String，b: String){      init{         ...      }}</code></pre><h1 id="类继承"><a href="#类继承" class="headerlink" title="类继承"></a>类继承</h1><p>默认任何类都是继承<code>Any</code>(与java中的object类似)，但是我们可以继承其它类，所有的类默认都是不可继承的(final)，所以我们只能继承那些明确声明<code>open</code>或者<code>abstract</code>的类：</p><pre><code> open class Parent(a:String) //定义一个父类可以被子类继承 class Child(a:Int,b:Int) : Parent(a.toString())  //继承{        init {           // ....        }}</code></pre><p>当我们只有单个构造器时，我们需要在从父类继承下来的构造器中指定需要的参数。这是用来替换Java中的super调用的。</p><h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><p>函数使用<code>fun</code>关键字来定义，例如定义一个<code>add</code>方法：</p><pre><code>fun add(a:Int,b:Int){    println(a+b)}</code></pre><p>关于返回值，默认返回<code>Unit</code>，相当于Java中的<code>void</code>，但是<code>Unit</code>是一个真正的对象。如果想要指定返回值，那么如下所示：</p><pre><code>fun add(a:Int,b:Int) : Int{    return a+b}</code></pre><blockquote><p><strong>提示:分号不是必须的</strong></p></blockquote><p>然而如果返回的结果可以使用一个表达式计算出来，你可以不使用括号而是使用等号：</p><pre><code>fun add (a:Int,b:Int) : Int = a + b</code></pre><p>#构造方法和函数参数<br>Kotlin中的参数与Java中的有些不同，Kotlin是先写参数的名字再写它的类型：</p><pre><code> fun add(a:Int,b:Int) : Int{    return a+b}</code></pre><p>我们可以给参数指定一个默认值，这里有一个例子，在Activity中创建了一个函数用来toast一段信息</p><pre><code>fun toast(message: String, length: Int = Toast.LENGTH_SHORT) { Toast.makeText(this, message, length).show()}</code></pre><p>如你所见，我们给第二个参数(length)制定了默认值，当你在调用方法的时候第二个参数可以传或者不传，这样可以避免你需要的重载函数</p><pre><code>toast(&quot;Hello&quot;)toast(&quot;Hello&quot;, Toast.LENGTH_LONG)</code></pre><p>这个与下面的Java代码是一样的：</p><pre><code>void toast(String message){}void toast(String message, int length){Toast.makeText(this, message, length).show();}</code></pre><p>这跟你想象的一样复杂。再看看这个例子：</p><pre><code> fun niceToast(message: String,            tag: String = javaClass&lt;MainActivity&gt;().getSimpleName(),            length: Int = Toast.LENGTH_SHORT) {Toast.makeText(this, &quot;[$className] $message&quot;, length).show()}</code></pre><p>我增加了第三个默认值是类名的tag参数。如果在Java中总数开销会以几何增长。现在可以通过以下方式调用：</p><pre><code>toast(&quot;Hello&quot;)toast(&quot;Hello&quot;, &quot;MyTag&quot;)toast(&quot;Hello&quot;, &quot;MyTag&quot;, Toast.LENGTH_SHORT)</code></pre><p>而且甚至还有其它选择，因为你可以使用参数名字来调用，这表示你可以通过在值前写明参数名来传入你希望的参数：</p><pre><code>toast(message = &quot;Hello&quot;, length = Toast.LENGTH_SHORT)</code></pre><blockquote><p><strong>小提示：String模版<br>你可以在String中直接使用模版表达式。它可以帮助你很简单地在静态值和变量的基础上编写复杂的String。在上面的例子中，我使用了”[$className] $message”。<br>如你所见，任何时候你使用一个$符号就可以插入一个表达式。如果这个表达式有一点复杂，你就需要使用一对大括号括起来：”Your name is ${user.name}”。</strong></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;怎么定义一个类&quot;&gt;&lt;a href=&quot;#怎么定义一个类&quot; class=&quot;headerlink&quot; title=&quot;怎么定义一个类&quot;&gt;&lt;/a&gt;怎么定义一个类&lt;/h1&gt;&lt;p&gt;如果你想定义一个类，你只需要使用&lt;code&gt;class&lt;/code&gt;关键字，这一点和&lt;strong&gt;
+      
+    
+    </summary>
+    
+      <category term="Kotlin" scheme="http://yoursite.com/categories/Kotlin/"/>
+    
+    
+      <category term="Kotlin" scheme="http://yoursite.com/tags/Kotlin/"/>
+    
+      <category term="fun" scheme="http://yoursite.com/tags/fun/"/>
+    
+      <category term="Any" scheme="http://yoursite.com/tags/Any/"/>
+    
+      <category term="open" scheme="http://yoursite.com/tags/open/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Kotlin之变量和属性</title>
+    <link href="http://yoursite.com/2018/06/13/Kotlin%E4%B9%8B%E5%8F%98%E9%87%8F%E5%92%8C%E5%B1%9E%E6%80%A7/"/>
+    <id>http://yoursite.com/2018/06/13/Kotlin之变量和属性/</id>
+    <published>2018-06-13T03:27:32.000Z</published>
+    <updated>2019-06-14T02:56:58.729Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>在<strong>Kotlin</strong>中，<strong>一切都是对象</strong>。没有像Java那样的原始基本类型。这个是非常有帮助的，因为我们可以使用一致的方式来处理所有的可用的类型。</p></blockquote><h1 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h1><ul><li><p><strong>数字类型中不会转型</strong><br>举个例子，你不能给<code>Double</code>变量分配一个<code>Int</code>。必须要做一个明确的类型转换，可以使用众多的函数之一：</p><pre><code>val i : Int = 7val d: Double = i.toDouble()</code></pre></li><li><p><strong>字符(Char)不能直接作为一个数字来处理</strong><br>在需要时我们需要把他们转换为一个数字：</p><pre><code>val c : Char = &apos;c&apos;val i : Int = c.toInt()</code></pre></li><li><p><strong>位运算也有一点不同。</strong><br>在Android中，我们经常<code>flags</code>中使用“或”，所以我使用“and”和“or”来举例：</p><pre><code>//Javaint bitwiseOr = FLAG1 | FLAG2;int bitwiseAnd = FLAG1 &amp; FLAG2;//Kotlinval bitwiseOr = FLAG1 or FLAG2val bitwiseAnd = FLAG1 and FLAG2</code></pre><blockquote><p>还有很多其他的位操作符，比如<strong>sh1</strong>，<strong>shs</strong>，<strong>ushr</strong>，<strong>xor</strong>，或<strong>ivn</strong>。当我们需要的时候，可以去Kotlin官网查看。</p></blockquote></li><li><p>**字面上可以写明具体的类型。这个不是必须的，但是一个通用的Kotlin实践时省略变量的类型(我们马上就能看到)，所以我们可以让编译器自己去推断出具体的类型。</p><pre><code>val i = 12 //An Intval iHex = 0x0f   //一个十六进制的Int类型val l = 3L    //A Longval d = 3.5  //A Doubleval f = 3.5F //A Float</code></pre></li><li><p>**一个String可以像数组那样访问，并且被迭代：</p><pre><code>val s = &quot;Example&quot;val c = s[2]  //这是一个字符&apos;a&apos; //迭代String for(c in s){  println(c) }</code></pre></li></ul><h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><p>变量可以简单地定义成可变(<strong>var</strong>)和不可变(<strong>val</strong>)的变量。这个与Java中使用的<code>final</code>很相似。但是<strong>不可变</strong>在Kotlin中是一个很重要的概念。</p><blockquote><p>在Kotlin中，<strong>应该尽可能的使用val</strong></p></blockquote><h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><p>属性与Java中的字段是相同的，但是更加强大。属性做的事情是字段加上getter()加上setter。我们通过一个例子来比较他们的不同之处。这是Java中字段安全访问和修改所需要的代码：</p><pre><code>public class Person{   private String name;   public String getName(){       return name;    }   public void setName(String name){         this.name = name;    } } ... Person person = new Person(); person.setName(&quot;name&quot;); String name = person.getName();</code></pre><p>在Kotlin中，只需要一个属性就可以了：</p><pre><code>public class Person {  var name: String = &quot;&quot;}... val person = Person(); person.name = &quot;name&quot; val name = person.name</code></pre><p>如果没有任何指定，属性会默认使用getter和setter。当然它也可以修改为你自定义的代码，并且不修改存在的代码：</p><pre><code>public class Person{  var name: String = &quot;&quot;  get() = field.toUpperVase()  set(value){     field = &quot;Name: &amp;value&quot;   } }</code></pre><p>如果需要在getter和setter中访问这个属性自身的值，它需要创建一个backing field。可以使用field这个预留字段来访问，它会被编译器找到正在使用的并自动创建。需要注意的是，如果我们直接调用了属性，那我们会使用setter和getter而不是直接访问这个属性。backing field只能在属性访问器内访问。</p><p>就如在前面章节提到的，当操作Java代码的时候，Kotlin将允许使用属性的语法去访问在Java文件中定义的getter/setter方法。编译器会直接链接到它原始的getter/setter方法。所以当我们直接访问属性的时候不会有性能开销</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;blockquote&gt;
+&lt;p&gt;在&lt;strong&gt;Kotlin&lt;/strong&gt;中，&lt;strong&gt;一切都是对象&lt;/strong&gt;。没有像Java那样的原始基本类型。这个是非常有帮助的，因为我们可以使用一致的方式来处理所有的可用的类型。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1
+      
+    
+    </summary>
+    
+      <category term="Kotlin" scheme="http://yoursite.com/categories/Kotlin/"/>
+    
+    
+      <category term="Kotlin" scheme="http://yoursite.com/tags/Kotlin/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>7.0手机打开相机或相册报错解决方案</title>
+    <link href="http://yoursite.com/2018/06/13/%E6%89%93%E5%BC%80%E7%9B%B8%E6%9C%BA%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/"/>
+    <id>http://yoursite.com/2018/06/13/打开相机报错解决方案/</id>
+    <published>2018-06-13T03:11:53.000Z</published>
+    <updated>2019-06-14T01:26:02.938Z</updated>
+    
+    <content type="html"><![CDATA[<p>在android 7.0以上的手机上打开相机、相册会报如下错误:<br>android.os.FileUriExposedException: <strong><em>**</em></strong> exposed beyond app through Intent.getData()</p><p><strong>产生原因</strong><br>在Android7.0系统上，Android 框架强制执行了 StrictMode API 政策禁止向你的应用外公开 file:// URI。 如果一项包含文件 file:// URI类型 的 Intent 离开你的应用，应用失败，并出现 FileUriExposedException 异常，如调用系统相机拍照，或裁切照片。</p><p><strong>解决方法</strong><br>官方的解决方法(<a href="https://developer.android.google.cn/training/secure-file-sharing/setup-sharing.html" target="_blank" rel="noopener">https://developer.android.google.cn/training/secure-file-sharing/setup-sharing.html</a>)</p><h5 id="在manifest清单文件中注册provider"><a href="#在manifest清单文件中注册provider" class="headerlink" title="在manifest清单文件中注册provider"></a>在manifest清单文件中注册provider</h5><pre><code>&lt;!--android7.0拍照 需要注册FileProvider--&gt;&lt;provider      android:name=&quot;android.support.v4.content.FileProvider&quot;      android:authorities=&quot;包名.fileprovider&quot;      android:grantUriPermissions=&quot;true&quot;      android:exported=&quot;false&quot;&gt;      &lt;meta-data            android:name=&quot;android.support.FILE_PROVIDER_PATHS&quot;            android:resource=&quot;@xml/file_paths&quot; /&gt; &lt;/provider&gt;</code></pre><p>也就是在application内加了一个provider，其中，name是固定的，android:authorities是你的应用包名+“.fileprovider”，其实这里不一定要写fileprovider，可以随便写，只是要与后面FileProvider.getUriForFile(）这个方法中的第二个参数authority对应起来即可。android:grantUriPermissions固定true，表示uri访问授权，android:exported固定的false，android:resource表示我们app要共享文件的路径的资源文件.</p><h5 id="指定共享目录"><a href="#指定共享目录" class="headerlink" title="指定共享目录"></a>指定共享目录</h5><pre><code>&lt;paths&gt;    &lt;external-path name=&quot;camera_photos&quot; path=&quot;&quot; /&gt;&lt;/paths&gt;</code></pre><p>为了指定共享的目录我们需要在资源(res)目录下创建一个xml目录，然后创建一个名为“file_paths”(名字可以随便起，只要和在manifest注册的provider所引用的resource保持一致即可)的资源文件。<br>上述代码中 path=”” ，是有特殊意义的，它代表根目录，也就是说你可以向其它的应用共享根目录及其子目录下任何一个文件了，如果你将path设为 path=”pictures” ，那么它代表着根目录下的pictures目录(eg:/storage/emulated/0/pictures)，如果你向其它应用分享pictures目录范围之外的文件是不行的。</p><h5 id="使用FileProvider"><a href="#使用FileProvider" class="headerlink" title="使用FileProvider"></a>使用FileProvider</h5><p>以打开相机为例：</p><pre><code>Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE); if (Build.VERSION.SDK_INT &gt;= 24) {         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);        //24以上使用FileProvider         intent.putExtra(MediaStore.EXTRA_OUTPUT,          FileProvider.getUriForFile(getContext(), &quot;包名.fileprovider&quot;, mTmpFile)); }else{         //24以下         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mTmpFile));      }</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;在android 7.0以上的手机上打开相机、相册会报如下错误:&lt;br&gt;android.os.FileUriExposedException: &lt;strong&gt;&lt;em&gt;**&lt;/em&gt;&lt;/strong&gt; exposed beyond app through Intent.ge
+      
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="FileProvider" scheme="http://yoursite.com/tags/FileProvider/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>进程间通信及Binder原理解析</title>
+    <link href="http://yoursite.com/2018/06/09/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E5%8F%8ABinder%E5%8E%9F%E7%90%86%E8%A7%A3%E6%9E%90/"/>
+    <id>http://yoursite.com/2018/06/09/进程间通信及Binder原理解析/</id>
+    <published>2018-06-09T08:47:19.000Z</published>
+    <updated>2019-06-14T01:26:02.939Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><blockquote><p>在网上有很多关于android跨进程通信的文章，但是大多数看了之后还是不知所云，一脸懵逼，最近抽时间整理了一下这方面的知识，为了能让大家从应用层上清楚地了解跨进程通信的实现原理，我会将我所讲的内容分为<strong>多进程</strong>、<strong>Binder</strong>和这两个部分，接下来我会按照我的思路给大家一一讲解。</p></blockquote><h1 id="多进程"><a href="#多进程" class="headerlink" title="多进程"></a>多进程</h1><p>在讲跨进程通信之前，我们必须先要了解Android中的多进程模式。通过在四大组件中指定<code>android:process</code>属性，便可以轻易的开启多进程模式，这样似乎看起来很简单，其实并不是这样，多进程远远没有我们想象的这么简单，有时候我们通过多进程得到的好处甚至都不足以弥补使用多进程带来的代码层面的负面影响。下面是一个例子，描述了如何在Android中创建多进程：</p><pre><code>&lt;activity android:name=&quot;.MainActivity&quot;&gt;        &lt;intent-filter&gt;            &lt;action android:name=&quot;android.intent.action.MAIN&quot; /&gt;            &lt;category android:name=&quot;android.intent.category.LAUNCHER&quot; /&gt;        &lt;/intent-filter&gt;&lt;/activity&gt;&lt;activity android:name=&quot;.FirstActivity&quot;          android:label=&quot;@string/app_name&quot;          android:process=&quot;:remote&quot; /&gt;&lt;activity android:name=&quot;.SecondActivity&quot;          android:label=&quot;@string/app_name&quot;          android:process=&quot;com.process.demo.remote&quot;/&gt;</code></pre><p>上面的<strong>FirstActivity</strong>和<strong>SecondActivity</strong>都指定了<code>process</code>属性，但是属性值不同，相当于当前应用又新添加了两个进程，而<strong>MainActivity</strong>没有指定<code>process</code>属性，那么它是运行在默认的进程中，而系统默认的进程就是当前应用的包名；<strong>FirstActivity</strong>中的<code>process</code>属性值为<code>:remote</code>，这个<code>:</code>的含义是指在当前进程名前面附加当前的包名，也就是说<strong>FirstActivity</strong>的完整进程名为<strong>com.process.demo.remote</strong>；而对于<strong>SecondActivity</strong>中的<code>process</code>是一种完整命名方式，不会附加包名信息。另外，进程名以<code>:</code>开头的进程属于当前应用的私有进程，其它应用的组件不能和它跑在一个进程中，而进程名不以<code>:</code>开头的进程属于全局进程，其它应用通过<code>ShareUID</code>的方式可以和它跑在同一个进程中，Android系统会为每个应用分配一个唯一的<strong>UID</strong>，具有相同<strong>UID</strong>的应用才能共享数据，关于<strong>ShareUID</strong>的详细信息大家可以查一下资料，我就不多做解释了。</p><p>然后继续，将程序运行起来后，通过adb命令(adb shell ps 包名)查看当前应用下的进程列表，如图所示：<br><img src="https://upload-images.jianshu.io/upload_images/2349677-ecd432cacfc69e48.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p><code>PID</code>为当前进程的id，可以发现这三个id都不一样，也就是说成功的开启了三个进程。而在前面我们说到使用多进程会产生一些负面影响，接下来验证一下这个问题。<br>首先我们新建一个<strong>Constant</strong>类，并声明一个<code>int</code>类型的静态常量</p><pre><code>public class Constant {     public static int id = 1;}</code></pre><p>接着在<strong>MainActivity</strong>的’onCreate()’方法中修改这个<code>id</code>值，给它改为<code>2</code>，最后在<strong>MainActivity</strong>和<strong>FirstActivity</strong>中分别去打印这个<code>id</code>值，打印出来的日志如下：<br><img src="https://upload-images.jianshu.io/upload_images/2349677-760ec1949c3caf23.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p>看了图中的日志，发现结果貌似跟我们想象中的不一样啊，<strong>FirstActivity</strong>打印出来的值咋还是<code>1</code>呢，我们的确在<strong>MainActivity</strong>给<code>id</code>赋值了，然后在<strong>MainActivity</strong>又启动了<strong>FirstActivity</strong>。到这里，想必大家已经明白了这就是多进程所带来的问题。所以说，多进程并非我们想象中的那么简单。</p><p>出现以上结果原因就在于<strong>MainActivity</strong>和<strong>FirstActivity</strong>是两个不同的进程，而Android会为每个应用分配一个独立的虚拟机，或者说为每个进程分配一个独立的虚拟机，而每个独立的虚拟机都有它自己独享的内存，不同的虚拟机在内存分配上有不同的地址空间，因此不同进程是无法共享内存中的数据的，对于上面例子而言，其实<code>com.process.demo</code>和<code>com.process.demo.remote</code>这两个进程中都有一个<strong>Constant</strong>类，而且这两个类是互不干扰的，所以说在<strong>FirstActivity</strong>中的<code>id</code>值并没有发生改变。</p><p>最后我们总结一下，使用多进程造成的如下几方面的问题：</p><ul><li>静态成员和单例模式完全失效</li><li>线程同步机制完全失效</li><li>SharedPreferences的可靠性下降</li><li>Application会多次创建</li></ul><p>第一个问题已经分析；第二个问题其实和第一个本质上是一样的，想想就知道了，进程都不一样了，锁的对象都不是同一个对象了，还怎么去保证线程同步；第三个问题是因为SharedPreferences不支持两个进程去同时执行写的操作，否则会导致一定几率的数据丢失，这是因为SharedPreferences底层是通过读/写<strong>XML</strong>文件来实现的，并发写显然是可能出问题的，甚至并发读/写都有可能出问题；第四个问题也是显而易见的，当一个组件跑在一个新的进程中的时候，由于系统要在创建新的进程同时分配独立的虚拟机，所以这个过程其实就是启动了一个应用的过程，因此会重新创建新的<strong>Application</strong>，不信的话，大家可以去测试一下。</p><h1 id="Binder"><a href="#Binder" class="headerlink" title="Binder"></a>Binder</h1><p>上面我们分析了多进程所带来的问题，那么接下来就是讲解如何解决它，其实系统提供了很多跨进程通信的方法，虽然不能共享内存但是通过跨进程通信我们还是可以实现数据交互。其实Android的这四大组件中都可以实现跨进程通信，而AIDL也是处理进程间通信的一种方式，AIDL跨进程的核心实现其实就是Binder，接下来我们就详细分析一下Binder的实现原理。</p><p>先写一个简单的例子：<br>比如我有一个需求，服务端提供给客户端添加书籍和获取所有书籍列表的方法。</p><p>1、在包名目录下创建一个bean目录，在bean目录下创建一个Book实体类<br><img src="https://upload-images.jianshu.io/upload_images/2349677-917ffe837b219152.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br>然后让Book实现Parcleable接口，代码如下：</p><pre><code>public class Book implements Parcelable{public int bookId;public String bookName;protected Book(Parcel in) {    bookId = in.readInt();    bookName = in.readString();}public Book(int bookId, String bookName) {    this.bookId = bookId;    this.bookName = bookName;}public static final Creator&lt;Book&gt; CREATOR = new Creator&lt;Book&gt;() {    @Override    public Book createFromParcel(Parcel in) {        return new Book(in);    }    @Override    public Book[] newArray(int size) {        return new Book[size];    }};@Overridepublic int describeContents() {    return 0;}@Overridepublic void writeToParcel(Parcel dest, int flags) {    dest.writeInt(bookId);    dest.writeString(bookName);}</code></pre><p>}</p><p>2、 创建Book.aidl、IBookManager.aidl文件。Book.aidl是Book类在AIDL中的声明，IBookManager.aidl是我们定义的一个接口，里面有两个方法：<code>getBookList</code>和<code>addBook</code>,其中<code>getBookList</code>用来获取服务端书籍列表，<code>addBook</code>用来往服务端添加书籍，这里需要注意的是 Book类和Book.aidl所在的包名要一致，不然AS会编译失败，如图所示：<br><img src="https://upload-images.jianshu.io/upload_images/2349677-ed72123717c18d0c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p>还需要在IBookManager.aidl中使用<strong>import</strong>导入Book类</p><pre><code>package com.kdp.aidl;import com.kdp.aidl.bean.Book;interface IBookManager {void addBook(in Book book);List&lt;Book&gt; getBookList();}</code></pre><p>Book.aidl代码如下：</p><pre><code>package com.kdp.aidl.bean;parcelable  Book;</code></pre><p>最后编译一下，AS会自动帮你生成一个IBookManager.java的一个类，该类所在目录如下：<br><img src="https://upload-images.jianshu.io/upload_images/2349677-f0cc3b5f0b287a7b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p>而这个类就是Binder的核心实现，现在我们需要对这个类进行分析，先看一下整体代码：</p><pre><code>   package com.kdp.aidl;   public interface IBookManager extends android.os.IInterface   {       /** Local-side IPC implementation stub class. */       public static abstract class Stub extends android.os.Binder implements  com.kdp.aidl.IBookManager   {    private static final java.lang.String DESCRIPTOR =&quot;com.kdp.aidl.IBookManager&quot;; /** Construct the stub at attach it to the interface. */     public Stub()   {     this.attachInterface(this, DESCRIPTOR);   }/*** Cast an IBinder object into an com.kdp.aidl.IBookManager interface,* generating a proxy if needed.*/ public static com.kdp.aidl.IBookManager asInterface(android.os.IBinder obj) {        if ((obj==null)) {          return null;        }  android.os.IInterface iin = obj.queryLocalInterface(DESCRIPTOR);  if (((iin!=null)&amp;&amp;(iin instanceof com.kdp.aidl.IBookManager))) {      return ((com.kdp.aidl.IBookManager)iin);  }    return new com.kdp.aidl.IBookManager.Stub.Proxy(obj);  }   @Override public android.os.IBinder asBinder()  {  return this;  }   @Override public boolean onTransact(int code, android.os.Parcel data,   android.os.Parcel reply, int flags) throws android.os.RemoteException {  switch (code) {  case INTERFACE_TRANSACTION: {  reply.writeString(DESCRIPTOR);  return true;  }@Override public boolean onTransact(int code, android.os.Parcel data,   android.os.Parcel reply, int flags) throws android.os.RemoteException {  switch (code) {  case INTERFACE_TRANSACTION: {  reply.writeString(DESCRIPTOR);  return true;  }  case TRANSACTION_addBook:  {  data.enforceInterface(DESCRIPTOR);  com.kdp.aidl.bean.Book _arg0;  if ((0!=data.readInt())) {   _arg0 = com.kdp.aidl.bean.Book.CREATOR.createFromParcel(data);   }   else {  _arg0 = null;   }  this.addBook(_arg0);  reply.writeNoException();  return true;  }  case TRANSACTION_getBookList:  {     data.enforceInterface(DESCRIPTOR);     java.util.List&lt;com.kdp.aidl.bean.Book&gt; _result = this.getBookList();     reply.writeNoException();     reply.writeTypedList(_result);     return true;  } }    return super.onTransact(code, data, reply, flags);}   private static class Proxy implements com.kdp.aidl.IBookManager   {     private android.os.IBinder mRemote;     Proxy(android.os.IBinder remote)     {        mRemote = remote;     }      @Override public android.os.IBinder asBinder()    {      return mRemote;    }      public java.lang.String getInterfaceDescriptor()   {      return DESCRIPTOR;   }    @Override public void addBook(com.kdp.aidl.bean.Book book) throws        android.os.RemoteException  {       android.os.Parcel _data = android.os.Parcel.obtain();       android.os.Parcel _reply = android.os.Parcel.obtain();    try {           _data.writeInterfaceToken(DESCRIPTOR);           if ((book!=null)) {             _data.writeInt(1);               book.writeToParcel(_data, 0);            }           else {             _data.writeInt(0);            }           mRemote.transact(Stub.TRANSACTION_addBook, _data, _reply, 0);           _reply.readException();          }         finally {           _reply.recycle();          _data.recycle();         }       }      @Override public java.util.List&lt;com.kdp.aidl.bean.Book&gt; getBookList() throws android.os.RemoteException       {            android.os.Parcel _data = android.os.Parcel.obtain();            android.os.Parcel _reply = android.os.Parcel.obtain();            java.util.List&lt;com.kdp.aidl.bean.Book&gt; _result;            try {              _data.writeInterfaceToken(DESCRIPTOR);              mRemote.transact(Stub.TRANSACTION_getBookList, _data, _reply, 0);              _reply.readException();              _result = _reply.createTypedArrayList(com.kdp.aidl.bean.Book.CREATOR);                }        finally {                  _reply.recycle();                 _data.recycle();                }             return _result;         }  }     static final int TRANSACTION_addBook =      (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);    static final int TRANSACTION_getBookList =     (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);}    public void addBook(com.kdp.aidl.bean.Book book) throws android.os.RemoteException;    public java.util.List&lt;com.kdp.aidl.bean.Book&gt; getBookList() throws android.os.RemoteException;</code></pre><p>}</p><p>粗略的看了一下，发现这里面有很多内部类，我们先看最外层的这个IBookManager，它是一个接口，此接口定义了两个方法，分别是<code>addBook</code>，<code>getBookList</code>，另外还有两个常量id，</p><pre><code>static final int TRANSACTION_addBook = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);static final int TRANSACTION_getBookList = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);</code></pre><p>这两个常量id是服务端用来区分这两个方法的，当客户端发起一个请求时，服务端会根据这个id来判断客户端请求的是哪个方法；此外IBookManager继承了 <code>android.os.IInterface</code>接口，该接口中只定义了一个方法，如图：<br><img src="https://upload-images.jianshu.io/upload_images/2349677-e9f6f0b24af7366c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p>这个方法表示返回当前<strong>Binder</strong>对象。<br>接下来我们继续往下看，在<strong>IBookManager</strong>内部有一个<strong>Stub</strong>类，而且是抽象的，这个<strong>Stub</strong>你有没有感觉很熟悉，其实它就是我们在Service中需要实例化的<strong>Binder</strong>对象，我们一般会在Service中这样做<br><img src="https://upload-images.jianshu.io/upload_images/2349677-4189f00c7efb2199.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p>而这个<strong>Stub</strong>继承了<code>android.os.Binder</code>并且实现了IBookManager接口类，我们看<strong>Stub</strong>的构造方法，里面有一个<code>attachInterface</code>方法</p><pre><code>public Stub(){this.attachInterface(this, DESCRIPTOR);}</code></pre><p>第一个参数不用多说，第二个参数<code>DESCRIPTOR</code>是<strong>Binder</strong>的唯一标识，一般用当前<strong>Binder</strong>的类名表示，比如本例中的<code>com.kdp.aidl.IBookManager&quot;</code>。点开进入此方法内部，发现这个方法在<strong>Binder</strong>类中做了如下赋值:<br><img src="https://upload-images.jianshu.io/upload_images/2349677-e8c5cc4211bb64a1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p>将<strong>Binder</strong>类的唯一标识赋值给了<code>mDescriptor</code>变量，现在大家肯定有疑问，这个<code>mDescriptor</code>变量到底有什么用?当然有用了，接下来我们会用到它。</p><p>下面接着看IBookManager.java这个类，在Stub构造方法下面有一个<code>asInterface</code>的静态方法，<br><img src="https://upload-images.jianshu.io/upload_images/2349677-33ad6a83a8dcdb36.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p>这个方法想必大家都不会陌生，这个就是我们在客户端需要调用的方法，我们一般在客户端这样写：</p><pre><code>IBookManager binder = IBookManager.Stub.asInterface(binder);</code></pre><p>此方法传入的是服务端的<strong>Binder</strong>对象，而这个方法就是用来将服务端的<strong>Binder</strong>对象转换成客户端所需的<strong>AIDL</strong>接口类型的对象，这种转换过程是区分进程的，如果客户端和服务端位于同一进程，那么此方法返回的就是服务端的<strong>Stub</strong>对象本身，否则返回的是系统封装后的<strong>Stub.proxy</strong>对象。<br>在这个方法中我们发现有一个<code>queryLocalInterface</code>方法，此方法就是用来判断客户端和服务端是否位于同一进程，该方法传入当前<strong>Binder</strong>类的唯一标识，进入此方法内部来看看里面做了什么？</p><p><img src="https://upload-images.jianshu.io/upload_images/2349677-f8fd68b1e79a1105.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p>我们发现传入的<code>DESCRIPTOR</code>要跟<code>mDescroptor</code>变量做对比，等等，这个<code>mDescroptor</code>不就是我们在<code>attachInterface</code>方法中赋值的那个变量吗？没错，也就是说，当客户端和服务端位于同一个进程时，<code>mDescroptor</code>变量和我们传入的<code>DESCRIPTOR</code>是相同的，所以直接就会返回当前的<strong>Binder</strong>对象本身；如果客户端和服务端不在同一个进程，那么客户端所在进程中的<code>mDescriptor</code>变量就会为空，由于我们只在服务端通过new的方式来实例化了<strong>Stub</strong>对象并给<code>mDescriptor</code>赋值，也就是说服务端所在的进程中<code>mDescriptor</code>变量是有值的，但是在客户端只是通过<code>asInterface</code>方法来获取<strong>Stub</strong>对象，而并没有给<code>mDescriptor</code>变量赋值，所以客户端所在进程中的<code>mDescriptor</code>变量是空的，回想上面我们讲多进程数据共享的时候举过的一个例子，内存中的数据只有在同一进程才会被共享。</p><p>当客户端和服务端不在同一个进程时，<code>asInterface</code>方法则会返回系统封装后的<strong>Stub.Proxy</strong>对象，将服务端的<strong>Binder</strong>对象通过构造方法传了进去，并且这个<strong>Proxy</strong>是<strong>Stub</strong>中的一个内部类，该类也实现了<strong>IBookManager</strong>接口，并实现了<code>addBook</code>和<code>getBookList</code>这两个方法，而这两个方法是我们在客户端需要调用的，比如当客户端调用<code>getBookList</code>方法时，如下图所示：<br><img src="https://upload-images.jianshu.io/upload_images/2349677-833f2f549afa0bbb.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p>此方法内部首先会创建该方法所需要的输入型<strong>Parcel</strong>对象<strong>_data</strong>、输出型<strong>Parcel</strong>对象<strong>_reply</strong>和返回值对象<strong>List</strong>；<br>然后把该方法的参数信息写入<strong>_data</strong>中(如果有参数的话)，接着会调用<strong>transact</strong>方法来发起<strong>RPC</strong>(远程过程调用)请求，同时当前线程挂起；然后服务端的<strong>onTarnsact</strong>方法会被调用，直到<strong>RPC</strong>过程返回后，当前线程继续执行，并从<strong>_reply</strong>中取出<strong>RPC</strong>过程的返回结果，最后返回<strong>_reply</strong>中的数据。</p><p>在调用<strong>transact</strong>方法发起RPC请求时，服务端的<code>onTarnsact</code>方法会被调用，我们进入<code>transact</code>方法的内部会发现<br><img src="https://upload-images.jianshu.io/upload_images/2349677-1c9f19f806c77e25.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p><p>此方法中调用了<code>onTransact</code>方法，这个方法也是定义在系统的<strong>Binder</strong>类中，我们之前讲了<strong>Stub</strong>类继承自<strong>Binder</strong>，那么在我们的<strong>Stub</strong>类中重写了<strong>Binder</strong>类中的<code>onTransact</code>方法，而此方法是运行在服务端的<strong>Binder</strong>线程池中，当客户端发起请求时，远程请求会通过系统底层封装后交由此方法来处理。该方法原型为`public Boolean onTransact(int code，android.os.Parcel data，android.os.Parcel.reply，int flags)。<br>看一下该方法内部做了什么</p><pre><code>    @Override public boolean onTransact(int code, android.os.Parcel data,   android.os.Parcel reply, int flags) throws android.os.RemoteException {  switch (code) {  case INTERFACE_TRANSACTION: {  reply.writeString(DESCRIPTOR);  return true;  }@Override public boolean onTransact(int code, android.os.Parcel data,   android.os.Parcel reply, int flags) throws android.os.RemoteException {  switch (code) {  case INTERFACE_TRANSACTION: {  reply.writeString(DESCRIPTOR);  return true;  }  case TRANSACTION_addBook:  {  data.enforceInterface(DESCRIPTOR);  com.kdp.aidl.bean.Book _arg0;  if ((0!=data.readInt())) {   _arg0 = com.kdp.aidl.bean.Book.CREATOR.createFromParcel(data);   }   else {  _arg0 = null;   }  this.addBook(_arg0);  reply.writeNoException();  return true;  }  case TRANSACTION_getBookList:  {     data.enforceInterface(DESCRIPTOR);     java.util.List&lt;com.kdp.aidl.bean.Book&gt; _result = this.getBookList();     reply.writeNoException();     reply.writeTypedList(_result);     return true;  } }    return super.onTransact(code, data, reply, flags);}</code></pre><p>在该方法中，服务端会根据传入的<strong>code</strong>来判断当前客户端请求的是哪个方法，这个<strong>code</strong>就是这两个方法的id，然后服务端就会调用相应的目标方法，比如当客户端调用<code>getBookList</code>方法时，最终实现此方法是在Sercvice中(因为我们是在Service中<strong>new Stub</strong>然后实现<strong>IBookManager</strong>接口中的这两个方法的)，而调用是在服务端的<code>onTransact</code>方法中，服务端会先判断<strong>code</strong>，然后再调用<code>getBooList</code>方法拿到数据，之后便将<code>List&lt;Book&gt;</code>序列化后写入到<strong>reply</strong>这个<strong>Parcel</strong>对象中，接着我们再回到客户端的<code>getBookList</code>方法</p><pre><code>     @Override public java.util.List&lt;com.kdp.aidl.bean.Book&gt; getBookList() throws android.os.RemoteException  {     android.os.Parcel _data = android.os.Parcel.obtain();     android.os.Parcel _reply = android.os.Parcel.obtain();     java.util.List&lt;com.kdp.aidl.bean.Book&gt; _result;  try {    _data.writeInterfaceToken(DESCRIPTOR);    mRemote.transact(Stub.TRANSACTION_getBookList, _data, _reply, 0);   _reply.readException();  _result = _reply.createTypedArrayList(com.kdp.aidl.bean.Book.CREATOR);    }    finally {  _reply.recycle();  _data.recycle();  }   return _result;  }</code></pre><p>在调用<strong>Binder</strong>的<code>transact</code>方法之后，此时的<code>_reply</code>中已经有了客户端所需要的数据，然后将<code>_reply</code>反序列化取出<code>List&lt;!-- &lt;Book&gt; --&gt;</code>，返回给客户端，这样一个完整的远程请求就结束了</p><p>最后给大家看一下<strong>Binder</strong>的工作机制图</p><p><img src="https://upload-images.jianshu.io/upload_images/2349677-93100ed114e985d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Binder的工作机制图.png"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;blockquote&gt;
+&lt;p&gt;在网上有很多关于android跨进程通信的文章，但是大多数看了之后还是不知所云，一脸懵逼，最近抽时间整理了一下这方
+      
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="Process" scheme="http://yoursite.com/tags/Process/"/>
+    
+      <category term="AIDL" scheme="http://yoursite.com/tags/AIDL/"/>
+    
+      <category term="Binder" scheme="http://yoursite.com/tags/Binder/"/>
+    
+  </entry>
+  
+</feed>
