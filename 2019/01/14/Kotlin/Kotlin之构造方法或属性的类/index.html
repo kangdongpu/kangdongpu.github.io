@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Kotlin,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="满天星爱我" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="主构造方法和初始化语句块声明一个主构造方法 class User constructor(_nickname: String){&amp;lt;!-- 带一个参数的主构造方法--&amp;gt;     val nickname: String     init { &amp;lt;!--初始化语句块--&amp;gt;         nickname = _nickname     } } 在上面的例子中，由于主构造方法中有">
+<meta name="keywords" content="Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin之构造方法或属性的类">
+<meta property="og:url" content="http://yoursite.com/2019/01/14/Kotlin/Kotlin之构造方法或属性的类/index.html">
+<meta property="og:site_name" content="满天星爱我">
+<meta property="og:description" content="主构造方法和初始化语句块声明一个主构造方法 class User constructor(_nickname: String){&amp;lt;!-- 带一个参数的主构造方法--&amp;gt;     val nickname: String     init { &amp;lt;!--初始化语句块--&amp;gt;         nickname = _nickname     } } 在上面的例子中，由于主构造方法中有">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-13T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin之构造方法或属性的类">
+<meta name="twitter:description" content="主构造方法和初始化语句块声明一个主构造方法 class User constructor(_nickname: String){&amp;lt;!-- 带一个参数的主构造方法--&amp;gt;     val nickname: String     init { &amp;lt;!--初始化语句块--&amp;gt;         nickname = _nickname     } } 在上面的例子中，由于主构造方法中有">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/14/Kotlin/Kotlin之构造方法或属性的类/">
+
+
+
+
+
+  <title>Kotlin之构造方法或属性的类 | 满天星爱我</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">满天星爱我</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">如果可以安逸，谁愿意颠沛流离！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/14/Kotlin/Kotlin之构造方法或属性的类/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="满天星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="满天星爱我">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kotlin之构造方法或属性的类</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-14T00:00:00+08:00">
+                2019-01-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kotlin/" itemprop="url" rel="index">
+                    <span itemprop="name">Kotlin</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  798 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="主构造方法和初始化语句块"><a href="#主构造方法和初始化语句块" class="headerlink" title="主构造方法和初始化语句块"></a>主构造方法和初始化语句块</h1><p>声明一个主构造方法</p>
+<pre><code>class User constructor(_nickname: String){&lt;!-- 带一个参数的主构造方法--&gt;
+    val nickname: String
+    init { &lt;!--初始化语句块--&gt;
+        nickname = _nickname
+    }
+}
+</code></pre><p>在上面的例子中，由于主构造方法中有限制，不能包含初始化代码，因此需要使用初始化语句块。</p>
+<p>在这个例子中，也可以去掉<code>constructor</code>关键字</p>
+<pre><code>class User2 constructor(_nickname: String){
+    val nickname = _nickname
+}
+</code></pre><p>如果属性用相应的构造方法参数来初始化，代码可以通过把<code>val</code>关键字加在参数前的方式来进行简化，这样就可以替换类中的属性定义</p>
+<pre><code>class User(val nickname:String)
+</code></pre><p>可以向函数参数一样为构造方法参数声明默认值</p>
+<pre><code>class User(val nickname: String,val isSubscribed: Boolean = true)
+</code></pre><p>如果一个类中具有父类，主构造方法中同样需要初始化父类</p>
+<pre><code>open class User(val nickname: String){...}
+
+class TwitterUser(name:String) : User(name){...}
+</code></pre><p>如果父类没有提供任何的构造方法，必须显示地调用父类的构造方法，即使它没有任何的参数</p>
+<pre><code>open class Button
+class RadioButton : Button()
+</code></pre><p>不要让类外部的代码实例化它，可以将构造方法标记为<code>private</code></p>
+<pre><code>class Secretive private constructor(){...}
+</code></pre><h1 id="用不同的方式初始化父类"><a href="#用不同的方式初始化父类" class="headerlink" title="用不同的方式初始化父类"></a>用不同的方式初始化父类</h1><p>当需要重写父类多个构造方法时，需要声明多个从构造方法</p>
+<pre><code>class MyButton : View{
+
+    constructor(ctx:Context):this(ctx, null)&lt;!--调用自己的构造方法--&gt;
+    constructor(ctx: Context,attr: AttributeSet?):super(ctx,attr) &lt;!--调用父类的构造方法--&gt;
+}    
+</code></pre><h1 id="实现在接口中声明的属性"><a href="#实现在接口中声明的属性" class="headerlink" title="实现在接口中声明的属性"></a>实现在接口中声明的属性</h1><pre><code>interface User {
+    val nickname: String
+}
+</code></pre><ul>
+<li><p>在子类的主构造方法的参数前面加上<code>override</code>关键字，表明这个属性实现了来自于父类<code>User</code>的抽象属性</p>
+<pre><code>class PrivateUser(override val nickname: String) : User 
+</code></pre></li>
+</ul>
+<ul>
+<li><p><code>nickname</code>属性通过自定义<code>getter</code>的方式来实现</p>
+<pre><code>class SubscribingUser(val email: String) : User {
+    override val nickname: String
+        get() = email.substringBefore(&quot;@&quot;)
+}
+</code></pre></li>
+<li>在初始化时将<code>nickname</code>属性与值关联的方式来实现</li>
+</ul>
+<pre><code>class FaceBookUser(val accountId：Int) : User {
+    override val nickname = getFacebookName(accountId)
+}
+</code></pre><p>除了抽象属性声明外，接口还可以包含具有<code>getter</code>和<code>setter</code>的属性</p>
+<pre><code>interface User {
+    val email: String
+    val nickname: String
+        get() = email.substringBefore(&quot;@&quot;)
+}
+</code></pre><p>这个接口包含抽象属性<code>email</code>，同时<code>nickname</code>属性有一个自定义的<code>getter</code>。第一个属性必须在子类中重写，第二个属性是可以被继承的。</p>
+<h1 id="通过getter或setter访问支持字段"><a href="#通过getter或setter访问支持字段" class="headerlink" title="通过getter或setter访问支持字段"></a>通过<code>getter</code>或<code>setter</code>访问支持字段</h1><p>声明一个可变属性，并且在每次<code>setter</code>访问时执行额外的代码</p>
+<pre><code>class User(val name: String){
+    var address: String = &quot;unspecified&quot;
+        set(value) {
+            println(&quot;Address was changed for $name: $address -&gt; $value&quot;) &lt;!--读取支持字段的值--&gt;
+            field = value &lt;!--更新支持字段的值--&gt;
+        }
+}
+
+val user = User(&quot;kangdongpu&quot;);
+user.address = &quot;HeBei,SJZ&quot;
+&lt;!--输出--&gt;
+Address was changed for kangdongpu: unspecified -&gt; HeBei,SJZ
+</code></pre><p>在<code>setter</code>的函数体中，使用了特殊的标识符<code>field</code>来访问支持字段的值。在<code>getter</code>中，只能读取值；而在<code>setter</code>中，即能读取也能修改它</p>
+<h1 id="修改访问器的可见性"><a href="#修改访问器的可见性" class="headerlink" title="修改访问器的可见性"></a>修改访问器的可见性</h1><p>声明一个具有<code>private setter</code>的属性，让其不能在类外部被修改</p>
+<pre><code>class LengthCounter {
+    var counter:Int = 0
+    private set &lt;!--不能在类外部修改此属性值，将setter的可见性改为private--&gt;
+
+    fun addWord(word:String){&lt;!--可在类内部通过方法修改--&gt;
+        counter+=word.length
+    }
+}
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kotlin/" rel="tag"><i class="fa fa-tag"></i> Kotlin</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/10/Kotlin/Kotlin之类继承结构/" rel="next" title="Kotlin之类继承结构">
+                <i class="fa fa-chevron-left"></i> Kotlin之类继承结构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/16/Kotlin/Kotlin之通用对象方法、数据类和委托类/" rel="prev" title="Kotlin之通用对象方法、数据类和委托类">
+                Kotlin之通用对象方法、数据类和委托类 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="满天星">
+            
+              <p class="site-author-name" itemprop="name">满天星</p>
+              <p class="site-description motion-element" itemprop="description">Android Developer</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/kangdp" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#主构造方法和初始化语句块"><span class="nav-number">1.</span> <span class="nav-text">主构造方法和初始化语句块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用不同的方式初始化父类"><span class="nav-number">2.</span> <span class="nav-text">用不同的方式初始化父类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现在接口中声明的属性"><span class="nav-number">3.</span> <span class="nav-text">实现在接口中声明的属性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#通过getter或setter访问支持字段"><span class="nav-number">4.</span> <span class="nav-text">通过getter或setter访问支持字段</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改访问器的可见性"><span class="nav-number">5.</span> <span class="nav-text">修改访问器的可见性</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+         <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">满天星</span>
+
+  
+</div>
+
+<!-- 
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+ 
+  <span class="post-meta-divider">|</span>
+
+
+ 
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+ -->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

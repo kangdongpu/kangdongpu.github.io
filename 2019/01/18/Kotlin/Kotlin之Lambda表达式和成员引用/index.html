@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Kotlin,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="满天星爱我" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Lambda介绍：作为函数参数的代码块用匿名内部类实现监听器 &amp;lt;!--Java--&amp;gt; button.setOnClickListener(new OnClickListener(){        override        public void onClick(View view){           &amp;lt;!-- 点击后执行的动作--&amp;gt;        }     }">
+<meta name="keywords" content="Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin之Lambda表达式和成员引用">
+<meta property="og:url" content="http://yoursite.com/2019/01/18/Kotlin/Kotlin之Lambda表达式和成员引用/index.html">
+<meta property="og:site_name" content="满天星爱我">
+<meta property="og:description" content="Lambda介绍：作为函数参数的代码块用匿名内部类实现监听器 &amp;lt;!--Java--&amp;gt; button.setOnClickListener(new OnClickListener(){        override        public void onClick(View view){           &amp;lt;!-- 点击后执行的动作--&amp;gt;        }     }">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2349677-829577c94c89a493.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/500">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/2349677-d33319b76370bf2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2019-01-17T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin之Lambda表达式和成员引用">
+<meta name="twitter:description" content="Lambda介绍：作为函数参数的代码块用匿名内部类实现监听器 &amp;lt;!--Java--&amp;gt; button.setOnClickListener(new OnClickListener(){        override        public void onClick(View view){           &amp;lt;!-- 点击后执行的动作--&amp;gt;        }     }">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/2349677-829577c94c89a493.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/500">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/18/Kotlin/Kotlin之Lambda表达式和成员引用/">
+
+
+
+
+
+  <title>Kotlin之Lambda表达式和成员引用 | 满天星爱我</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">满天星爱我</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">如果可以安逸，谁愿意颠沛流离！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/18/Kotlin/Kotlin之Lambda表达式和成员引用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="满天星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="满天星爱我">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kotlin之Lambda表达式和成员引用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-18T00:00:00+08:00">
+                2019-01-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kotlin/" itemprop="url" rel="index">
+                    <span itemprop="name">Kotlin</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,283 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Lambda介绍：作为函数参数的代码块"><a href="#Lambda介绍：作为函数参数的代码块" class="headerlink" title="Lambda介绍：作为函数参数的代码块"></a>Lambda介绍：作为函数参数的代码块</h1><p>用匿名内部类实现监听器</p>
+<pre><code>&lt;!--Java--&gt;
+button.setOnClickListener(new OnClickListener(){
+       override
+       public void onClick(View view){
+          &lt;!-- 点击后执行的动作--&gt;
+       }
+    }
+);
+</code></pre><p>现在用Kotlin的Lambda表达式来替换匿名内部类</p>
+<pre><code>button.setOnClickListener{&lt;!--点击后执行的动作--&gt;}
+</code></pre><h1 id="Lambda和集合"><a href="#Lambda和集合" class="headerlink" title="Lambda和集合"></a>Lambda和集合</h1><p>先看一个例子</p>
+<pre><code>data class Person(val name:String,val age:Int)
+</code></pre><p>然后创建一个Person集合，并找出集合中年龄最大的那个</p>
+<pre><code>val list = listOf(Person(&quot;Alice&quot;,29),Person(&quot;Bob&quot;,31))
+println(list.maxBy{it.age})
+Person{name=Bob，age=31}
+</code></pre><p>如上使用了Kotlin的库函数，<code>maxBy</code>函数可以在任何集合上调用，且只需要一个实参：一个函数，指定比较哪个值来找到最大值，而花括号中的代码<code>{it.age}</code>就是实现了这个逻辑的<code>lambda</code></p>
+<p>如果lambda刚好是属性的委托，可以用成员引用代替</p>
+<pre><code>list.maxBy(Person::age)
+</code></pre><h1 id="Lambda表达式语句"><a href="#Lambda表达式语句" class="headerlink" title="Lambda表达式语句"></a>Lambda表达式语句</h1><p><img src="https://upload-images.jianshu.io/upload_images/2349677-829577c94c89a493.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/500" alt></p>
+<p>还可以把<code>lambda</code>表达式存储在一个变量中</p>
+<pre><code>val sum = { x:Int,y:Int -&gt; x+y }
+println(sum(1,2))
+</code></pre><p>还可以直接调用<code>lambda</code>表达式</p>
+<pre><code>{println(42)}()
+</code></pre><p>但是这样的语法毫无可读性，也没有什么意义，如果你确实需要把一小段代码封闭在一个代码块中，可以使用库函数<code>run</code>来执行传给它的<code>lambda</code></p>
+<pre><code>run { println(42) }
+</code></pre><p>再回到上面的例子</p>
+<pre><code>val list = listOf(Person(&quot;Alice&quot;,29),Person(&quot;Bob&quot;,31))
+println(list.maxBy{it.age})
+</code></pre><p>如果不用简明的语法重写这个例子，你会得到下面的代码</p>
+<pre><code>list.maxBy( { p:Person -&gt; p.age} )
+</code></pre><p>这个代码就一目了然了，花括号里面的代码片段是<code>lambda</code>表达式，把它作为实参传递给函数。这个<code>lambda</code>接受一个Person的参数并返回它的年龄</p>
+<p>这个代码还可以简化，如果<code>lambda</code>表达式是函数调用的最后一个实参，它可以放到括号的外面</p>
+<pre><code>list.maxBy(){ p:Person -&gt; p.age }
+</code></pre><p>当<code>lambda</code>是函数唯一的实参时，还可以去掉调用代码中的空括号</p>
+<pre><code>list.maxBy { p:Person -&gt; p.age }
+</code></pre><p>省略<code>lambda</code>参数类型，和局部变量一样，如果<code>lambda</code>参数的类型可以被推导出来，你就不需要显示地指定它。这里以<code>maxBy</code>函数为例，其参数的类型始终和集合中元素的类型相同</p>
+<pre><code>list.maxBy { p -&gt; p.age }
+</code></pre><p>使用默认参数类型，仅在实参名称没有显示地指定时这个默认的名称才会生成</p>
+<pre><code>list.maxBy{ it.age }
+</code></pre><p><strong>注意：</strong> <code>it</code>约定能大大缩短你的代码，但你不应该滥用它。尤其在嵌套<code>lambda</code>的情况下，最后显示地声明每个<code>lambda</code>的参数。否则很难搞清楚<code>it</code>引用的到底是哪个值。</p>
+<p>此外，<code>lambda</code>表达式还可以包含更多的语句</p>
+<pre><code>val sum = { x:Int,y:Int -&gt; 
+    println(&quot;Computing the sum of $x and $y...&quot;)
+    x+y
+}
+
+println(sum(1,2)
+
+Computing the sum of 1 and 2...
+3
+</code></pre><h1 id="在作用域中访问变量"><a href="#在作用域中访问变量" class="headerlink" title="在作用域中访问变量"></a>在作用域中访问变量</h1><p>当在函数中声明一个匿名内部类的时候，在匿名内部类中可以引用函数的参数和局部变量。如果函数内部使用<code>lambda</code>，也可以访问这个函数的参数</p>
+<pre><code>fun printMessageWithPrefix(messages:Collec    tion&lt;String&gt;,prefix:String){
+        messages.forEach {&lt;!--接收lambda作为实参--&gt;
+        println(&quot;$prefix $it&quot;) &lt;!--在lambda中访问prefix参数--&gt;
+    }
+}
+</code></pre><p>这里Kotlin和Java的区别就是，在Kotlin中不会仅限于访问<code>final</code>变量，在<code>lambda</code>内部也可以修改这些变量</p>
+<h1 id="成员引用"><a href="#成员引用" class="headerlink" title="成员引用"></a>成员引用</h1><p>如果你想要当做参数传递的代码已经被定义成了函数，那么你可以将这个函数转换成值，如下使用<code>::</code>运算符来转换</p>
+<pre><code>val getAge = Person::age
+</code></pre><p>这种表达式被称为成员引用，它提供简明语法，来创建一个调用单个方法或这访问单个属性的函数值。双冒号把类名称和你要引用的成员名称隔开</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/2349677-d33319b76370bf2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt></p>
+<p>如下这个<code>lambda</code>表达式</p>
+<pre><code>val getAge = { person:Person -&gt; person.age }
+</code></pre><p>成员引用和调用函数的<code>lambda</code>具有一样的类型，所以可以相互转换</p>
+<pre><code>list.maxBy(Person::age)
+</code></pre><p>还可以引用顶层函数，这种情况省略了类名称，直接以<code>::</code>开头。成员引用<code>::salute</code>被当作实参传递给库函数<code>run</code></p>
+<pre><code>fun salute() = println(&quot;Salute!&quot;)
+run (::salute)
+Salute!
+</code></pre><p>如果<code>lambda</code>要委托给一个接收多个参数的函数，提供成员引用代替它将会非常方便</p>
+<pre><code>val action = {person:Person,message:String -&gt; sendEmail(person,message)}
+
+val nextAction = ::sendEmail
+调用
+nextAction(...,...)
+</code></pre><p>可以用构造方法引用存储或者延期执行创建类实例的动作，构造方法的引用方式是在双冒号后指定类名称</p>
+<pre><code>val createPerson = ::Person &lt;!--创建`Person`实例的动作被保存成了值--&gt;
+val person = createPerson(&quot;kdp&quot;,25)
+println(person)
+</code></pre><p>还可以使用同样的方式引用扩展函数</p>
+<pre><code>fun Person.isAdult() = age &gt;= 21
+val predicate = Person::isAdult
+</code></pre><h1 id="绑定引用"><a href="#绑定引用" class="headerlink" title="绑定引用"></a>绑定引用</h1><p>Kotlin1.1允许你使用成员引用语法捕捉特定实例对象上的方法引用</p>
+<pre><code>val p = Person(&quot;Dmitry&quot;,34)
+val dmitrysAgeFunction = p::age
+println(dmitrysAgeFunction())
+</code></pre><blockquote>
+<p>注意：dmitrysAgeFunction是一个零函数的参数，在Kotlin1.1之前，你需要显示地写出<code>lambda{p.age}</code>，而不是使用绑定成员引用<code>p::age</code></p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kotlin/" rel="tag"><i class="fa fa-tag"></i> Kotlin</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/17/Kotlin/Kotlin之Object关键字：将声明一个类与创建一个实例结合起来/" rel="next" title="Kotlin之Object关键字：将声明一个类与创建一个实例结合起来">
+                <i class="fa fa-chevron-left"></i> Kotlin之Object关键字：将声明一个类与创建一个实例结合起来
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/19/Kotlin/Kotlin之惰性集合操作：序列/" rel="prev" title="Kotlin之惰性集合操作：序列">
+                Kotlin之惰性集合操作：序列 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="满天星">
+            
+              <p class="site-author-name" itemprop="name">满天星</p>
+              <p class="site-description motion-element" itemprop="description">Android Developer</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/kangdp" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Lambda介绍：作为函数参数的代码块"><span class="nav-number">1.</span> <span class="nav-text">Lambda介绍：作为函数参数的代码块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lambda和集合"><span class="nav-number">2.</span> <span class="nav-text">Lambda和集合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Lambda表达式语句"><span class="nav-number">3.</span> <span class="nav-text">Lambda表达式语句</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在作用域中访问变量"><span class="nav-number">4.</span> <span class="nav-text">在作用域中访问变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#成员引用"><span class="nav-number">5.</span> <span class="nav-text">成员引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#绑定引用"><span class="nav-number">6.</span> <span class="nav-text">绑定引用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+         <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">满天星</span>
+
+  
+</div>
+
+<!-- 
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+ 
+  <span class="post-meta-divider">|</span>
+
+
+ 
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+ -->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

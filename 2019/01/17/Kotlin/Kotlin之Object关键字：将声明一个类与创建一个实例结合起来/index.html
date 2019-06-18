@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Kotlin,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="满天星爱我" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="对象声明：创建单例易如反掌Kotlin使用对象声明功能能将类声明与该类的单一实例声明结合到一起。需要注意的是对象声明可以包含属性、方法、初始化语句块等的声明，唯一不允许的就是构造方法。 object Payroll{     val allEmployee = arrayListOf&amp;lt;Person&amp;gt;()     fun caculateSalary(){         for (pe">
+<meta name="keywords" content="Kotlin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kotlin之Object关键字：将声明一个类与创建一个实例结合起来">
+<meta property="og:url" content="http://yoursite.com/2019/01/17/Kotlin/Kotlin之Object关键字：将声明一个类与创建一个实例结合起来/index.html">
+<meta property="og:site_name" content="满天星爱我">
+<meta property="og:description" content="对象声明：创建单例易如反掌Kotlin使用对象声明功能能将类声明与该类的单一实例声明结合到一起。需要注意的是对象声明可以包含属性、方法、初始化语句块等的声明，唯一不允许的就是构造方法。 object Payroll{     val allEmployee = arrayListOf&amp;lt;Person&amp;gt;()     fun caculateSalary(){         for (pe">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-01-16T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kotlin之Object关键字：将声明一个类与创建一个实例结合起来">
+<meta name="twitter:description" content="对象声明：创建单例易如反掌Kotlin使用对象声明功能能将类声明与该类的单一实例声明结合到一起。需要注意的是对象声明可以包含属性、方法、初始化语句块等的声明，唯一不允许的就是构造方法。 object Payroll{     val allEmployee = arrayListOf&amp;lt;Person&amp;gt;()     fun caculateSalary(){         for (pe">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/01/17/Kotlin/Kotlin之Object关键字：将声明一个类与创建一个实例结合起来/">
+
+
+
+
+
+  <title>Kotlin之Object关键字：将声明一个类与创建一个实例结合起来 | 满天星爱我</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">满天星爱我</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">如果可以安逸，谁愿意颠沛流离！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/01/17/Kotlin/Kotlin之Object关键字：将声明一个类与创建一个实例结合起来/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="满天星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="满天星爱我">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kotlin之Object关键字：将声明一个类与创建一个实例结合起来</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-17T00:00:00+08:00">
+                2019-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kotlin/" itemprop="url" rel="index">
+                    <span itemprop="name">Kotlin</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  621 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  3 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="对象声明：创建单例易如反掌"><a href="#对象声明：创建单例易如反掌" class="headerlink" title="对象声明：创建单例易如反掌"></a>对象声明：创建单例易如反掌</h1><p>Kotlin使用对象声明功能能将类声明与该类的单一实例声明结合到一起。需要注意的是对象声明可以包含属性、方法、初始化语句块等的声明，唯一不允许的就是构造方法。</p>
+<pre><code>object Payroll{
+    val allEmployee = arrayListOf&lt;Person&gt;()
+    fun caculateSalary(){
+        for (person in allEmployee){
+        ...
+        }
+}
+}
+
+Payroll.allEmployee.add(Person(&quot;kdp&quot;,20))
+Payroll.caculateSalary()
+</code></pre><p>对象声明同样可以继承类和接口</p>
+<pre><code>object CaseInsensitiveFileComparator : Comparator&lt;File&gt;{
+    override fun compare(o1: File, o2: File): Int = o1.path.compareTo(o2.path,true)
+}
+</code></pre><p>同样也可以在类中声明对象</p>
+<h1 id="伴生对象：工厂方法和静态成员"><a href="#伴生对象：工厂方法和静态成员" class="headerlink" title="伴生对象：工厂方法和静态成员"></a>伴生对象：工厂方法和静态成员</h1><p>在类中定义的对象可以使用一个特殊的关键字来标记：<code>companion</code>。这样就可以直接通过容器类名称来访问这个对象的方法和属性。不需要显示的指明对象的名称。有点类似于Java中的静态方法的调用</p>
+<pre><code>class A{
+    companion object {
+        fun bar(){
+        println(&quot;This is a bar!&quot;)
+        }
+    }
+}
+
+A.bar()
+</code></pre><p>伴生对象可以访问类中的所有private成员，包括private构造方法</p>
+<pre><code>class User private constructor(val nickname:String){
+
+    companion object{
+        fun newSubscribingUser(email: String) = User(email.substringBefore(&apos;@&apos;))
+        fun newFacebookUser(account:String) = User(&quot;facebook&quot;)
+    }
+}
+
+
+val subscribing = User3.newSubscribingUser(&quot;Subscribing&quot;)
+val faceBook = User3.newFacebookUser(&quot;Facebook&quot;)
+println(subscribing.nickname)
+println(faceBook.nickname)
+</code></pre><h1 id="在伴生对象中实现接口"><a href="#在伴生对象中实现接口" class="headerlink" title="在伴生对象中实现接口"></a>在伴生对象中实现接口</h1><pre><code>interface JSONFactory&lt;T&gt;{
+    fun fromJSON(jsonStr:String) : T
+}
+class Person(val name:String){
+    companion object : JSONFactory&lt;Person&gt;{
+        override fun fromJSON(jsonStr: String) : Person = ...
+    }
+}
+
+fun &lt;T&gt;loadFromJSON (fact:JSONFactory&lt;T&gt;) : T = fact.fromJSON(&quot;kdp&quot;)
+
+loadFromJSON(Person) &lt;!--将伴生对象实例传给它--&gt;
+注意：Person类的名字被当做JSONFactory的实例
+</code></pre><h1 id="伴生对象扩展"><a href="#伴生对象扩展" class="headerlink" title="伴生对象扩展"></a>伴生对象扩展</h1><p>伴生对象同样可以用到扩展函数上</p>
+<pre><code>class Person(val firstName:String,val lastName:String){
+    companion object{}
+}
+
+fun Person.Companion.fromJSON(json:String): Person{...} &lt;!--声明一个扩展函数--&gt;
+
+val p = Person.fromJSON(json)
+</code></pre><h1 id="对象表达式：改变写法的匿名内部类"><a href="#对象表达式：改变写法的匿名内部类" class="headerlink" title="对象表达式：改变写法的匿名内部类"></a>对象表达式：改变写法的匿名内部类</h1><p>使用匿名内部类实现事件监听</p>
+<pre><code>window.addMouseListener{
+    object : MouseAdapter(){
+        override fun mouseClicked(e:MouseEvent){
+            ...
+        }
+
+        override fun mouseEntered(e:MouseEvent){
+            ...
+        }
+    }
+}
+</code></pre><p>除了去掉了对象的名称外，语法和对象声明是相同的，对象表达式声明了一个类并创建了该类的一个实例。</p>
+<p>可以给对象分配一个名字，将其存储在一个变量中</p>
+<pre><code>val listener = object : MouseAdapter(){
+        override fun mouseClicked(e:MouseEvent){
+            ...
+        }
+
+        override fun mouseEntered(e:MouseEvent){
+            ...
+        }
+    }
+</code></pre><p>与Java匿名内部类不同的是：Kotlin的匿名对象可以实现多个接口或者不实现接口</p>
+<p><strong>注意</strong>: 与对象声明不同，匿名对象不是单例的。每次对象表达式被执行都被创建一个新的实例。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kotlin/" rel="tag"><i class="fa fa-tag"></i> Kotlin</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/16/Kotlin/Kotlin之通用对象方法、数据类和委托类/" rel="next" title="Kotlin之通用对象方法、数据类和委托类">
+                <i class="fa fa-chevron-left"></i> Kotlin之通用对象方法、数据类和委托类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/18/Kotlin/Kotlin之Lambda表达式和成员引用/" rel="prev" title="Kotlin之Lambda表达式和成员引用">
+                Kotlin之Lambda表达式和成员引用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="满天星">
+            
+              <p class="site-author-name" itemprop="name">满天星</p>
+              <p class="site-description motion-element" itemprop="description">Android Developer</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/kangdp" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#对象声明：创建单例易如反掌"><span class="nav-number">1.</span> <span class="nav-text">对象声明：创建单例易如反掌</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#伴生对象：工厂方法和静态成员"><span class="nav-number">2.</span> <span class="nav-text">伴生对象：工厂方法和静态成员</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在伴生对象中实现接口"><span class="nav-number">3.</span> <span class="nav-text">在伴生对象中实现接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#伴生对象扩展"><span class="nav-number">4.</span> <span class="nav-text">伴生对象扩展</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对象表达式：改变写法的匿名内部类"><span class="nav-number">5.</span> <span class="nav-text">对象表达式：改变写法的匿名内部类</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+         <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">满天星</span>
+
+  
+</div>
+
+<!-- 
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+ 
+  <span class="post-meta-divider">|</span>
+
+
+ 
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+ -->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JVM,内存溢出,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="满天星爱我" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="内存溢出和内存泄漏的区别 内存溢出在Java虚拟机向系统申请内存时，由于虚拟机内部的各存储区域存储空间都有限制(可以通过指定虚拟机的某些参数来优化调整内存大小)，例如当堆内存被占满后，虚拟机再向系统申请内存是申请不到的，此时就会发生内存溢出  内存泄漏内存泄漏是针对GC(垃圾回收器)来说的，GC在进行对象回收时，一些无用对象仍然持续占有内存，无法得到及时释放，最后造成内存空间的浪费   关于内存溢">
+<meta name="keywords" content="JVM,内存溢出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM之内存溢出">
+<meta property="og:url" content="http://yoursite.com/2019/03/18/JVM/JVM之内存溢出/index.html">
+<meta property="og:site_name" content="满天星爱我">
+<meta property="og:description" content="内存溢出和内存泄漏的区别 内存溢出在Java虚拟机向系统申请内存时，由于虚拟机内部的各存储区域存储空间都有限制(可以通过指定虚拟机的某些参数来优化调整内存大小)，例如当堆内存被占满后，虚拟机再向系统申请内存是申请不到的，此时就会发生内存溢出  内存泄漏内存泄漏是针对GC(垃圾回收器)来说的，GC在进行对象回收时，一些无用对象仍然持续占有内存，无法得到及时释放，最后造成内存空间的浪费   关于内存溢">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-17T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JVM之内存溢出">
+<meta name="twitter:description" content="内存溢出和内存泄漏的区别 内存溢出在Java虚拟机向系统申请内存时，由于虚拟机内部的各存储区域存储空间都有限制(可以通过指定虚拟机的某些参数来优化调整内存大小)，例如当堆内存被占满后，虚拟机再向系统申请内存是申请不到的，此时就会发生内存溢出  内存泄漏内存泄漏是针对GC(垃圾回收器)来说的，GC在进行对象回收时，一些无用对象仍然持续占有内存，无法得到及时释放，最后造成内存空间的浪费   关于内存溢">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/18/JVM/JVM之内存溢出/">
+
+
+
+
+
+  <title>JVM之内存溢出 | 满天星爱我</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">满天星爱我</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">如果可以安逸，谁愿意颠沛流离！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/18/JVM/JVM之内存溢出/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="满天星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="满天星爱我">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JVM之内存溢出</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-18T00:00:00+08:00">
+                2019-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JVM/" itemprop="url" rel="index">
+                    <span itemprop="name">JVM</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,725 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="内存溢出和内存泄漏的区别"><a href="#内存溢出和内存泄漏的区别" class="headerlink" title="内存溢出和内存泄漏的区别"></a>内存溢出和内存泄漏的区别</h1><ul>
+<li><p><strong>内存溢出</strong><br>在Java虚拟机向系统申请内存时，由于虚拟机内部的各存储区域存储空间都有限制(可以通过指定虚拟机的某些参数来优化调整内存大小)，例如当堆内存被占满后，虚拟机再向系统申请内存是申请不到的，此时就会发生内存溢出</p>
+</li>
+<li><p><strong>内存泄漏</strong><br>内存泄漏是针对<strong>GC</strong>(垃圾回收器)来说的，<strong>GC</strong>在进行对象回收时，一些无用对象仍然持续占有内存，无法得到及时释放，最后造成内存空间的浪费</p>
+</li>
+</ul>
+<h1 id="关于内存溢出有以下几种分类"><a href="#关于内存溢出有以下几种分类" class="headerlink" title="关于内存溢出有以下几种分类"></a>关于内存溢出有以下几种分类</h1><ul>
+<li><strong>Java堆溢出</strong></li>
+<li><strong>虚拟机栈和本地方法栈溢出</strong></li>
+<li><strong>方法区和运行时常量池溢出</strong></li>
+</ul>
+<h2 id="Java堆溢出"><a href="#Java堆溢出" class="headerlink" title="Java堆溢出"></a>Java堆溢出</h2><p>Java堆用于存储对象实例，只要不断的创建对象，并且保证<strong>GC Roots</strong>到对象之间有可达路径来避免垃圾回收机制清除这些对象，当对象数量达到堆的最大容量后就会产生内存溢出异常。</p>
+<p>下面举个例子来验证一下堆内存溢出，为了方便实验，先把堆大小限制为10M，不可扩展(将堆的最小值<code>-Xms</code>参数与最大值<code>-Xmx</code>参数设置为一样即可避免堆自动扩展)，然后通过指定虚拟机的参数<code>-XX:+HeapDumpOnOutOfMemoryError</code>可以让虚拟机在出现内存溢出时<code>Dump</code>出当前的内存堆转储快照以便事后进行分析</p>
+<pre><code>public class HeapTest {
+public static void main(String[] args){
+    List&lt;Object&gt; list = new ArrayList&lt;&gt;();
+    while (true) {
+        list.add(new Object());
+    }
+    }
+}
+</code></pre><p>结果如下：</p>
+<pre><code>java.lang.OutOfMemoryError: Java heap space
+Dumping heap to java_pid13288.hprof ...
+Heap dump file created [13500082 bytes in 0.076 secs]
+Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: Java heap space
+at java.util.Arrays.copyOf(Arrays.java:3210)
+at java.util.Arrays.copyOf(Arrays.java:3181)
+at java.util.ArrayList.grow(ArrayList.java:265)
+at java.util.ArrayList.ensureExplicitCapacity(ArrayList.java:239)
+at java.util.ArrayList.ensureCapacityInternal(ArrayList.java:231)
+at java.util.ArrayList.add(ArrayList.java:462)
+at com.company.HeapTest.main(HeapTest.java:10)
+</code></pre><p>当然Java堆溢出不仅仅是以上情况，还有可能是内存泄漏导致的，比如内存泄漏地比较多了，浪费了大量的空间内存，这样就会导致堆内存会快速的被占满，然后造成内存溢出，到底是内存溢出还是内存泄漏还需要通过工具去查证，这里就不详细说了，网上有很多教程。</p>
+<h2 id="虚拟机栈和本地方法栈溢出"><a href="#虚拟机栈和本地方法栈溢出" class="headerlink" title="虚拟机栈和本地方法栈溢出"></a>虚拟机栈和本地方法栈溢出</h2><p>虚拟机栈也就是我们平常所说的栈，它在Java虚拟机规范中有两种异常:</p>
+<ul>
+<li>如果线程请求的栈深度大于虚拟机所允许的最大深度，将抛出<strong>StackOverflowError</strong>异常</li>
+<li>如果虚拟机在扩展栈时无法申请到足够的内存空间，则抛出<strong>OverOfMemoryError</strong>异常 </li>
+</ul>
+<p>上面所说的栈深度其实就是栈中栈帧的数量，操作系统分给JVM的内存是有限的，而JVM分给虚拟机栈的内存也是有限的，如果方法调用过多，创建的栈帧的数量也就越多，那么最终就会导致虚拟机栈溢出；当然我们可以通过<code>-Xss</code>参数来指定虚拟机栈的最大深度。另外，如果将虚拟机栈设置为可动态扩展，那么同样的当栈深度不够时，JVM会自动申请扩展，如果此时申请不到足够的内存空间就会抛出<strong>OverOfMemoryError</strong>异常</p>
+<h2 id="方法区和运行时常量池溢出"><a href="#方法区和运行时常量池溢出" class="headerlink" title="方法区和运行时常量池溢出"></a>方法区和运行时常量池溢出</h2><p>在JDK1.6以前，很多人愿意把方法区称为“永久代”，本质上两者并不等价，其实方法区只是Java虚拟机规范的一种定义，或者说用永久代来实现方法区而已，也就是说永久代仅仅是HotSpot的概念，对于其它虚拟机来说是不存在永久代的概念的。而使用永久代来实现方法区，更容易遇到内存溢出问题，所以在JDK1.7的HotSpot中，原本放在永久代中的字符串常量池被移到了堆中。</p>
+<p>接下来我们使用<code>String.intern()</code>方法来验证JDK1.6版本中方法区或者说是常量池溢出的情况，不过在此之前先来了解一下此方法在JDK1.6和JDK1.7中的作用：</p>
+<p><strong>jdk1.6中</strong></p>
+<ul>
+<li>如果字符串常量池中已经包含了一个等于(equals)此String对象的字符串，则返回常量池中这个字符串的String对象</li>
+<li>否则，将此String对象包含的字符串添加到常量池中，并返回此String对象的引用。</li>
+</ul>
+<p><strong>jdk1.7中</strong></p>
+<ul>
+<li>如果字符串常量池中已经包含了一个等于(equals)此String对象的字符串，则返回常量池中这个字符串的String对象</li>
+<li>否则，将复制一份此String对象的引用到字符串常量池中，并返回此引用</li>
+</ul>
+<p>他们的区别其实就是：<br>如果字符串常量池中不包含一个等于(equals)此String对象的字符串，那么</p>
+<ul>
+<li>在jdk1.6中，就会将堆中的字符串对象复制一份到字符串常量池中，然后返回该字符串对象</li>
+<li>而在jdk1.7中，会将堆中的字符串对象的引用复制一份到字符串常量池中，然后返回该引用</li>
+</ul>
+<p>为了方便测试jdk1.6中方法区的溢出，我们先通过<code>-XX:PermSize</code>和 <code>-XX:MaxPermSize</code>参数来限制方法区的大小，然后下面是测试代码</p>
+<pre><code>public static void main(String[] args){
+    List&lt;String&gt; list = new ArrayList&lt;String&gt;();
+    int i = 0;
+    while (true) {
+        list.add(String.valueOf(i++).intern());
+    }
+    }
+</code></pre><p>运行结果如下：</p>
+<pre><code>java.lang.OutOfMemoryError: PermGen space
+Dumping heap to java_pid7588.hprof ...
+Heap dump file created [109527439 bytes in 0.777 secs]
+Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: PermGen space
+at java.lang.String.intern(Native Method)
+at com.company.HeapTest.main(HeapTest.jav   a:11)
+Process finished with exit code 1
+</code></pre><p>我们应该很清楚的发现第一行报错信息：<br><code>java.lang.OutOfMemoryError: PermGen space</code><br>而<code>PermGen space</code>就是永久代，显而易见方法区溢出了，也说明了在jdk1.6中字符串常量池位于方法区内，而使用JDK1.7运行这段程序就不会得到相同的结果。</p>
+<p>最后我们再来验证一下JDK1.7中字符串常量池是否被移到了堆中，首先设置一下VM参数<code>-Xms10m -Xmx10m</code>，将堆内存限制到10M，然后再运行上面的代码，会出现如下结果</p>
+<pre><code>java.lang.OutOfMemoryError: Java heap space
+Dumping heap to java_pid10284.hprof ...
+Heap dump file created [21832557 bytes in 0.279 secs]
+Exception in thread &quot;main&quot; java.lang.OutOfMemoryError: Java heap space
+at java.lang.Integer.toString(Integer.java:403)
+at java.lang.String.valueOf(String.java:3099)
+at com.company.HeapTest.main(HeapTest.java:14)
+</code></pre><p>结果如出一辙，抛出了堆内存溢出的异常信息，说明JDK1.7中确实是把字符串常量池放到了堆中</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
+          
+            <a href="/tags/内存溢出/" rel="tag"><i class="fa fa-tag"></i> 内存溢出</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/15/JVM/JVM之内存管理机制/" rel="next" title="JVM之内存管理机制">
+                <i class="fa fa-chevron-left"></i> JVM之内存管理机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/28/JVM/JVM之垃圾回收机制/" rel="prev" title="JVM之垃圾回收机制">
+                JVM之垃圾回收机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="满天星">
+            
+              <p class="site-author-name" itemprop="name">满天星</p>
+              <p class="site-description motion-element" itemprop="description">Android Developer</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/kangdp" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#内存溢出和内存泄漏的区别"><span class="nav-number">1.</span> <span class="nav-text">内存溢出和内存泄漏的区别</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于内存溢出有以下几种分类"><span class="nav-number">2.</span> <span class="nav-text">关于内存溢出有以下几种分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java堆溢出"><span class="nav-number">2.1.</span> <span class="nav-text">Java堆溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟机栈和本地方法栈溢出"><span class="nav-number">2.2.</span> <span class="nav-text">虚拟机栈和本地方法栈溢出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法区和运行时常量池溢出"><span class="nav-number">2.3.</span> <span class="nav-text">方法区和运行时常量池溢出</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+         <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">满天星</span>
+
+  
+</div>
+
+<!-- 
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+ 
+  <span class="post-meta-divider">|</span>
+
+
+ 
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+ -->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

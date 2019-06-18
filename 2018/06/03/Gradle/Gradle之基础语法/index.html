@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Grovvy,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="满天星爱我" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="字符串在Grovvy中，单引号和双引号都可以定义一个字符串常量，不同的是单引号标记的是纯粹的字符串常量，而不是对字符串里的表达式做运算，但是双引号可以。 task printStringVar &amp;lt;&amp;lt; {     def name = &amp;quot;张三&amp;quot;     println &amp;apos;单引号的变量计算:${name}&amp;apos;     println &amp;quot;双引号">
+<meta name="keywords" content="Grovvy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gradle之基础语法">
+<meta property="og:url" content="http://yoursite.com/2018/06/03/Gradle/Gradle之基础语法/index.html">
+<meta property="og:site_name" content="满天星爱我">
+<meta property="og:description" content="字符串在Grovvy中，单引号和双引号都可以定义一个字符串常量，不同的是单引号标记的是纯粹的字符串常量，而不是对字符串里的表达式做运算，但是双引号可以。 task printStringVar &amp;lt;&amp;lt; {     def name = &amp;quot;张三&amp;quot;     println &amp;apos;单引号的变量计算:${name}&amp;apos;     println &amp;quot;双引号">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-02T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gradle之基础语法">
+<meta name="twitter:description" content="字符串在Grovvy中，单引号和双引号都可以定义一个字符串常量，不同的是单引号标记的是纯粹的字符串常量，而不是对字符串里的表达式做运算，但是双引号可以。 task printStringVar &amp;lt;&amp;lt; {     def name = &amp;quot;张三&amp;quot;     println &amp;apos;单引号的变量计算:${name}&amp;apos;     println &amp;quot;双引号">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/03/Gradle/Gradle之基础语法/">
+
+
+
+
+
+  <title>Gradle之基础语法 | 满天星爱我</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">满天星爱我</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">如果可以安逸，谁愿意颠沛流离！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/03/Gradle/Gradle之基础语法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="满天星">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="满天星爱我">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Gradle之基础语法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-03T00:00:00+08:00">
+                2018-06-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Gradle/" itemprop="url" rel="index">
+                    <span itemprop="name">Gradle</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,701 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><p>在<strong>Grovvy</strong>中，单引号和双引号都可以定义一个字符串常量，不同的是单引号标记的是纯粹的字符串常量，而不是对字符串里的表达式做运算，但是双引号可以。</p>
+<pre><code>task printStringVar &lt;&lt; {
+    def name = &quot;张三&quot;
+    println &apos;单引号的变量计算:${name}&apos;
+    println &quot;双引号的变量计算:${name}&quot;
+}
+</code></pre><p>输出结果如下：</p>
+<pre><code>单引号的变量计算:${name}
+双引号的变量计算:张三
+</code></pre><p>字符串连接运算规则：一个美元符号紧跟着一对花括号,花括号里放表达式，只有一个变量的时候可以省略花括号，如 $name。</p>
+<h1 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h1><blockquote>
+<p>常见的集合：List、Set、Map、Queue。</p>
+</blockquote>
+<ul>
+<li><p><strong>List</strong><br>在 Java 中定义一个List,需要New一个实现了List接口的类，在Grovvy中则非常简单，例如</p>
+<pre><code>task printList &lt;&lt; {
+  def numList = [1,2,3,4,5,6];
+  println numList.getClass().name
+}
+</code></pre><p>通过输出发现，numList是一个ArrayList类型。</p>
+<p>如果访问集合中的元素？<strong>Grovvy</strong>提供了非常简便的方法：</p>
+<pre><code>task printList &lt;&lt; {
+  def numList = [1,2,3,4,5,6];
+  println numList.getClass().name
+
+  println numList[1] //访问第二个元素
+  println numList[-1] //访问最后一个元素
+  println numList[-2] //访问倒数第二个元素
+  println numList[1..3] //访问第二个到第四个元素
+}
+</code></pre><p>输出结果：</p>
+<pre><code>2
+6
+5
+[2，3，4]
+</code></pre><p><strong>Grovvy</strong>还为<strong>List</strong>提供了非常方便的迭代操作，这就是<strong>each</strong>方法。该方法接收一个闭包作为参数，可以访问<strong>List</strong>里的每个元素：</p>
+<pre><code>task printList &lt;&lt; {
+  def numList = [1,2,3,4,5,6];
+
+  numList.each {
+     println it
+  }
+}
+</code></pre><p>输出结果：</p>
+<pre><code>1
+2
+3
+4
+5
+6
+</code></pre><p><strong>it</strong>变量为正在迭代的元素。</p>
+</li>
+<li><p><strong>Map</strong><br>定义一个<strong>Map</strong>，访问元素，采用<strong>map[key]</strong>或者<strong>map.key</strong>的方式都可以，例如：</p>
+<pre><code>task printlnMap &lt;&lt; {
+   def map1 = [&apos;width&apos;:1024,&apos;height&apos;:768]
+   println map1[&apos;width&apos;]
+   println map1.height
+ }
+</code></pre><p>输出结果：</p>
+<pre><code>1024
+768
+</code></pre><p>对于<strong>Map</strong>的迭代，当然少不了<strong>each</strong>方法，只不过迭代的元素是一个<strong>Map.Entry</strong>的实例：</p>
+<pre><code>task printlnMap &lt;&lt; {
+   def map1 = [&apos;width&apos;:1024,&apos;height&apos;:768]
+   map1.each {
+     println &quot;Key:${it.key},Value:${it.value}&quot;
+   }
+ }
+</code></pre><p>对于集合，<strong>Grovvy</strong>还提供了诸如<strong>collect、find、findAll</strong>等便捷的方法，可以自己查阅文档看一下。</p>
+</li>
+</ul>
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><ul>
+<li><p><strong>括号是可以不写的</strong><br>定义一个方法：</p>
+<pre><code>def method1 (int a,int b) {
+ println a+b
+}
+</code></pre><p>  关于方法的调用，在<strong>Grovvy</strong>中就要灵活得多，可以省略<strong>()</strong>，如下：</p>
+<pre><code>task invokeMethod &lt;&lt; {
+   method1 (1,2)
+   method1  1,2
+  }
+</code></pre><p>上面的两种调用方式的结果是一样的，但第二种更简洁，<strong>Gradle</strong>中的方法调用都是这样的写法。</p>
+</li>
+<li><p><strong>return是可以不写的</strong></p>
+<p>  在<strong>Grovvy</strong>中，我们定义有返回值的方法时，return语句不是必需的。当没有return的时候，Grovvy会把方法执行过程中的最后一句代码作为其返回值：</p>
+<pre><code>def method1 (int a,int b) {
+   if(a &gt; b) {
+        a
+   }else{
+        b
+   }
+}
+task invokeMethod &lt;&lt; {
+
+   def add1 = method1 1,2
+   def add2 = method1 5,3
+
+   println &quot;add1:${add1},add2:${add2}&quot;
+}
+</code></pre><p>输出结果：</p>
+<pre><code>add1:2，add2:5
+</code></pre></li>
+<li><p><strong>代码块可以作为参数传递</strong><br>呆板的写法   </p>
+<pre><code>  task printList2 &lt;&lt; {
+  def list = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;]
+  list.each({println it})
+}
+</code></pre><p>格式化一下，变成</p>
+<pre><code>task printList2 &lt;&lt; {
+  def list = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;]
+  list.each({
+    println it
+  })
+}
+</code></pre><p>  Grovvy规定，如果方法的最后一个参数是闭包，可以放到方法外面     </p>
+<pre><code>task printList2 &lt;&lt; {
+  def list = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;]
+  list.each(){
+    println it
+  }
+}
+</code></pre><p>  省略方法后，就是      </p>
+<pre><code>task printList2 &lt;&lt; {
+  def list = [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;,&apos;d&apos;,&apos;e&apos;]
+  list.each{
+    println it
+  }
+}
+</code></pre></li>
+</ul>
+<h1 id="JavaBean"><a href="#JavaBean" class="headerlink" title="JavaBean"></a>JavaBean</h1><p>  在<strong>Java</strong>中为了访问和修改<strong>JavaBean</strong>的属性，我们不得不重复生 成<strong>getter/setter</strong>方法，并且使用它们，太繁琐，这在<strong>Grovvy</strong>中得到了很大的改善：</p>
+<pre><code>task helloJavaBean &lt;&lt; {
+   Person p = new Person();
+   println &quot;名字是:${p.name},年龄:${p.age}&quot;
+   p.name = &apos;张三&apos;
+   p.age = 25
+   println &quot;名字是:${p.name},年龄:${p.age}&quot; 
+ }
+
+ class Person {
+   private String name
+   private int age
+ }
+</code></pre><p>在<strong>Grovvy</strong>中，并不是一定要定义成员变量才能作为类的属性访问，我们直接用<strong>getter/settter</strong>方法，也一样可以当作属性访问：</p>
+<pre><code>task helloJavaBean &lt;&lt; {
+   Person p = new Person();
+   println &quot;名字是:${p.name},年龄:${p.age}&quot;
+   p.name = &apos;张三&apos;
+   println &quot;名字是:${p.name},年龄:${p.age}&quot; 
+ }
+ class Person {
+     private String name
+      public int getAge(){
+            12
+      }
+ }
+</code></pre><p>上面的例子并没有定义一个<strong>age</strong>的成员变量，但是一样可以通过<strong>p.age</strong>获取到该值，这是因为定义了<strong>getAge()</strong>方法。那么这时候我们不能修改<strong>age</strong>的值，因为我们没有为其定义<strong>setter</strong>方法。</p>
+<h1 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h1><ul>
+<li><p><strong>向闭包传递参数</strong><br>当闭包有一个参数时，默认就是<strong>it</strong>；当有多个参数时，<strong>it</strong>就不能表示了，我们需要把参数一一列出：</p>
+<pre><code>task helloClosure &lt;&lt; {
+   //使用我们自定义的闭包
+     eachMap {key,value -&gt;
+     println &quot;$key,$value&quot;
+    }
+}
+</code></pre><p>自定义一个闭包方法</p>
+<pre><code>def eachMap(closure) {
+ def map = [&quot;name&quot;:&quot;张三&quot;,&quot;age&quot;:25]
+  map.each {
+  closure(it.key,it.value)
+  }
+}
+</code></pre><p>我们为闭包传递了两个参数，一个<strong>key</strong>，另一个<strong>value</strong>，这时我们就不能使用<strong>it</strong>了，必须要显式声明出来，如例子中的<strong>key、value -&gt;</strong>用于把闭包的参数和主体区分开来。</p>
+</li>
+<li><p><strong>闭包委托</strong><br><strong>Grovvy</strong>闭包的强大之处在于它支持闭包方法的委托。<strong>Grovvy</strong>的闭包有<strong>thisObject、owner、delegate</strong>三个属性，当你再闭包内调用方法时，由它们来确定使用哪个对象来处理。默认情况下<strong>delegate</strong>和<strong>owner</strong>是相等的，但是<strong>delegate</strong>是可以被修改的，这个功能是非常强大的，<strong>Gradle</strong>中的闭包的很多功能都是通过修改<strong>delegate</strong>实现的：</p>
+<pre><code>task helloDelegate &lt;&lt; {
+
+   new Delegate().test {
+   println &quot;thisObject:${thisObject.getClass()}&quot;
+   println &quot;owner:${owner.getClass()}&quot;
+   println &quot;delegate:${delegate.getClass()}&quot;
+   method1()
+   it.method1()
+   }
+ }
+
+def method1(){
+ println &quot;Context this:${this.getClass()} in root&quot;
+ println &quot;method1 in root&quot;
+}
+ class Delegate {
+
+   def method1(){
+     println &quot;Delegate this:${this.getClass()} in Delegate&quot;
+     println &quot;method1 in Delegate&quot;
+  }
+   def test(Closure&lt;Delegate&gt; closure) {
+       closure(this)
+   }
+}
+</code></pre><p>输出结果：</p>
+<pre><code>thisObject:class build_e27c427w88bo0afju9niqltzf
+owner:class build _e27c427w88bo0afju9niqltzf$_run_closure2
+delegate:class build _e27c427w88bo0afju9niqltzf$_run_closure2
+Context this:class build_e27c427w88bo0afju9niqltzf in root
+method1 in root
+Delegate this:class Delegate in Delegate
+method1 in Delegate
+</code></pre><p>通过上面的例子发现，<strong>thisObject</strong>的优先级最高，默认情况下，优先使用<strong>thisObject</strong>来处理闭包中调用的方法，如果有则执行。从输出中我们也可以看到，这个<strong>thisObject</strong>其实就是这个构建脚本的上下文，它和脚本中的<strong>this</strong>对象是相等的。<br>从例子中也证明了<strong>delegate</strong>和<strong>owner</strong>是相等的，它们两个的优先级是：<strong>owner</strong>要比<strong>delegate</strong>高。所以闭包内方法的处理顺序是：<strong>thisObject&gt;owner&gt;delegate</strong>。</p>
+<p>在<strong>DSL</strong>中，比如<strong>Gradle</strong>，我们一般会指定<strong>delegate</strong>为当前的<strong>it</strong>，这样我们在闭包内就可以对改<strong>it</strong>进行配置，或者调用其方法：</p>
+<pre><code>task closureStudent &lt;&lt; {
+    student {
+      name = &apos;张三&apos;
+      age = 23
+      dumpStudent()
+     }
+}
+
+class Student {
+  String name
+  int age
+  def dumpStudent() {
+     println &quot;name is ${name},age is ${age}&quot;
+  }
+ }
+
+ def student(Closure&lt;Student&gt; closure) {
+    Student p = new Student();
+    closure.delegate = p
+    closure.setResolveStrategy(Closure.DELEGATE_FIRST);
+    closure(p)
+ }
+</code></pre><p>  在例子中我们设置了委托对象为当前创建的<strong>Person</strong>实例，并且设置了委托模式优先，所以，我们在使用<strong>person</strong>方法创建一个<strong>Person</strong> 的实例时，可以在闭包里直接对该<strong>Person</strong>实例配置。</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Grovvy/" rel="tag"><i class="fa fa-tag"></i> Grovvy</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/01/Gradle/Gradle之Wrapper详解/" rel="next" title="Gradle之Wrapper详解">
+                <i class="fa fa-chevron-left"></i> Gradle之Wrapper详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/25/Android/在Properties配置文件中配置签名信息/" rel="prev" title="在Properties配置文件中配置签名信息">
+                在Properties配置文件中配置签名信息 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="满天星">
+            
+              <p class="site-author-name" itemprop="name">满天星</p>
+              <p class="site-description motion-element" itemprop="description">Android Developer</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/kangdp" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#字符串"><span class="nav-number">1.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#集合"><span class="nav-number">2.</span> <span class="nav-text">集合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#方法"><span class="nav-number">3.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaBean"><span class="nav-number">4.</span> <span class="nav-text">JavaBean</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#闭包"><span class="nav-number">5.</span> <span class="nav-text">闭包</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+         <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">满天星</span>
+
+  
+</div>
+
+<!-- 
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+ 
+  <span class="post-meta-divider">|</span>
+
+
+ 
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+ -->
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
